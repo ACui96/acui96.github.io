@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x-32-acui.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-acui.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.常用技巧1.导入Matplotlib12import matplotlib as mplimport matplotlib.pyplot as plt  2.设置绘图样式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Matplotlib学习笔记(上)">
+<meta property="og:url" content="http://example.com/2020/11/27/Matplotlib%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%8A/index.html">
+<meta property="og:site_name" content="Acui&#39;s Blog">
+<meta property="og:description" content="1.常用技巧1.导入Matplotlib12import matplotlib as mplimport matplotlib.pyplot as plt  2.设置绘图样式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_8_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_12_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_16_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_19_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_24_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_26_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_28_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_30_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_32_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_35_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_37_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_40_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_41_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_43_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_44_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_45_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_47_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_48_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_50_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_52_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_54_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_55_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_56_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_58_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_60_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_63_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_67_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_68_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_76_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_78_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_81_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_83_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_85_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_88_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_89_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_90_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_95_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_97_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_99_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_103_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_104_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_105_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_106_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_108_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_109_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_111_1.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_114_0.png">
+<meta property="article:published_time" content="2020-11-27T07:57:28.000Z">
+<meta property="article:modified_time" content="2020-12-10T01:50:32.167Z">
+<meta property="article:author" content="ACui">
+<meta property="article:tag" content="Matplotlib">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/cui_xinfeng/images/raw/master/image/output_8_0.png">
+
+<link rel="canonical" href="http://example.com/2020/11/27/Matplotlib%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%8A/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Matplotlib学习笔记(上) | Acui's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Acui's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Acui's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+
+    
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/27/Matplotlib%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="ACui">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Acui's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Matplotlib学习笔记(上)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-27 15:57:28" itemprop="dateCreated datePublished" datetime="2020-11-27T15:57:28+08:00">2020-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-10 09:50:32" itemprop="dateModified" datetime="2020-12-10T09:50:32+08:00">2020-12-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/27/Matplotlib%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%8A/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/27/Matplotlib%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%8A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-常用技巧"><a href="#1-常用技巧" class="headerlink" title="1.常用技巧"></a>1.常用技巧</h1><h2 id="1-导入Matplotlib"><a href="#1-导入Matplotlib" class="headerlink" title="1.导入Matplotlib"></a>1.导入Matplotlib</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-设置绘图样式"><a href="#2-设置绘图样式" class="headerlink" title="2.设置绘图样式"></a>2.设置绘图样式</h2><a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.style.use(<span class="string">&#x27;classic&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-用不用show-？-如何显示图形"><a href="#3-用不用show-？-如何显示图形" class="headerlink" title="3.用不用show()？ 如何显示图形"></a>3.用不用show()？ 如何显示图形</h2><h3 id="在IPython-Notebook中画图"><a href="#在IPython-Notebook中画图" class="headerlink" title="在IPython Notebook中画图"></a>在IPython Notebook中画图</h3><ul>
+<li>%matplotlib notebook 会在Notebook 中启动<strong>交互式</strong>图形</li>
+<li>%matplotlib inline 会在Notebook中启动<strong>静态</strong>图形</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">x = np.linspace(<span class="number">0</span>,<span class="number">10</span>,<span class="number">100</span>)</span><br><span class="line">fig = plt.figure()</span><br><span class="line">plt.plot(x,np.sin(x),<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">plt.plot(x,np.cos(x),<span class="string">&#x27;--&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_8_0.png" alt="png"></p>
+<h2 id="4-将图形保存为文件"><a href="#4-将图形保存为文件" class="headerlink" title="4.将图形保存为文件"></a>4.将图形保存为文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存为PNG格式</span></span><br><span class="line">fig.savefig(<span class="string">&#x27;my_figure.png&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="built_in">dir</span> -lh my_figure.png</span><br></pre></td></tr></table></figure>
+
+<pre><code> 驱动器 D 中的卷是 Data
+ 卷的序列号是 52E6-2C26
+
+ D:\Users\acui\JupyterNoteboolws\anacoda_workspace\DataScienceBook 的目录</code></pre>
+<p>​    </p>
+<pre><code> D:\Users\acui\JupyterNoteboolws\anacoda_workspace\DataScienceBook 的目录
+
+2020/11/27  15:48            26,294 my_figure.png
+               1 个文件         26,294 字节
+               0 个目录 237,361,610,752 可用字节</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用IPython的Image对象来显示文件内容</span></span><br><span class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> Image</span><br><span class="line">Image(<span class="string">&#x27;my_figure.png&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_12_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过canvas对象的方法查看系统支持的文件格式</span></span><br><span class="line">fig.canvas.get_supported_filetypes()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&#123;&#39;ps&#39;: &#39;Postscript&#39;,
+ &#39;eps&#39;: &#39;Encapsulated Postscript&#39;,
+ &#39;pdf&#39;: &#39;Portable Document Format&#39;,
+ &#39;pgf&#39;: &#39;PGF code for LaTeX&#39;,
+ &#39;png&#39;: &#39;Portable Network Graphics&#39;,
+ &#39;raw&#39;: &#39;Raw RGBA bitmap&#39;,
+ &#39;rgba&#39;: &#39;Raw RGBA bitmap&#39;,
+ &#39;svg&#39;: &#39;Scalable Vector Graphics&#39;,
+ &#39;svgz&#39;: &#39;Scalable Vector Graphics&#39;,
+ &#39;jpg&#39;: &#39;Joint Photographic Experts Group&#39;,
+ &#39;jpeg&#39;: &#39;Joint Photographic Experts Group&#39;,
+ &#39;tif&#39;: &#39;Tagged Image File Format&#39;,
+ &#39;tiff&#39;: &#39;Tagged Image File Format&#39;&#125;</code></pre>
+<h1 id="2-两种画图接口"><a href="#2-两种画图接口" class="headerlink" title="2.两种画图接口"></a>2.两种画图接口</h1><h2 id="1-MATLAB风格接口"><a href="#1-MATLAB风格接口" class="headerlink" title="1.MATLAB风格接口"></a>1.MATLAB风格接口</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">plt.figure() <span class="comment"># 创建图形</span></span><br><span class="line"><span class="comment"># 创建两个子图中的第一个，设置坐标轴</span></span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>) <span class="comment">#(行、列、子图编号)</span></span><br><span class="line">plt.plot(x, np.sin(x))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建两个子图中的第二个，设置坐标轴</span></span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>) <span class="comment">#(行、列、子图编号)</span></span><br><span class="line">plt.plot(x, np.cos(x))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x22a55288dc0&gt;]</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_16_1.png" alt="png"></p>
+<p>这种接口的特性是<strong>有状态的(stateful)</strong>  但容易出现问题</p>
+<h2 id="2-面向对象接口"><a href="#2-面向对象接口" class="headerlink" title="2.面向对象接口"></a>2.面向对象接口</h2><p>在面向对象接口中，画图函数不再受到当前“活动”图形或坐标轴的限制，而变成了显示的Figure和Axes的<strong>方法</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先创建图形网格</span></span><br><span class="line"><span class="comment"># ax是一个包含两个Axes对象的数组</span></span><br><span class="line">fig, ax = plt.subplots(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在每个对象上调用plot()方法</span></span><br><span class="line">ax[<span class="number">0</span>].plot(x, np.sin(x))</span><br><span class="line">ax[<span class="number">1</span>].plot(x, np.cos(x));</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_19_0.png" alt="png"></p>
+<p>简单图形看个人喜好，复杂图像面向对象会更方便。 大多数情况下，plt.plot()与 ax.plot()差异非常小</p>
+<h1 id="3-简易线形图"><a href="#3-简易线形图" class="headerlink" title="3.简易线形图"></a>3.简易线形图</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.style.use(<span class="string">&#x27;seaborn-whitegrid&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>要画Matplotlib图形时，都需要先创建一个图形fig和一个坐标轴ax。创建图形与坐标轴的最简单做法如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fig = plt.figure()</span><br><span class="line">ax = plt.axes()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_24_0.png" alt="png"></p>
+<p>figure可以看作是一个能够容纳各种东西的容器。  axes(plt.Axes类的一个实例)是一个带有刻度和标签的矩形<br>创建好坐标轴之后，就可以用ax.plot画图了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fig = plt.figure()</span><br><span class="line">ax = plt.axes()</span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">0</span>,<span class="number">10</span>,<span class="number">1000</span>)</span><br><span class="line">ax.plot(x, np.sin(x))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x22a553f2220&gt;]</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_26_1.png" alt="png"></p>
+<p>用pylab接口画图，这种图形与坐标轴都在底层执行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x,np.sin(x))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x22a5543d550&gt;]</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_28_1.png" alt="png"></p>
+<p>重复调用plot命令创建多条曲线</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.cos(x))</span><br><span class="line">plt.plot(x, np.sin(x))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x22a554911f0&gt;]</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_30_1.png" alt="png"></p>
+<h2 id="1-调整图形：线条的颜色与风格"><a href="#1-调整图形：线条的颜色与风格" class="headerlink" title="1.调整图形：线条的颜色与风格"></a>1.调整图形：线条的颜色与风格</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.sin(x - <span class="number">0</span>), color=<span class="string">&#x27;blue&#x27;</span>)           <span class="comment"># 标准颜色名称</span></span><br><span class="line">plt.plot(x, np.sin(x - <span class="number">1</span>), color=<span class="string">&#x27;g&#x27;</span>)              <span class="comment"># 缩写颜色代码(rgbcmyk)</span></span><br><span class="line">plt.plot(x, np.sin(x - <span class="number">2</span>), color=<span class="string">&#x27;0.75&#x27;</span>)           <span class="comment"># 范围在0~1的灰度值</span></span><br><span class="line">plt.plot(x, np.sin(x - <span class="number">3</span>), color=<span class="string">&#x27;#FFDD44&#x27;</span>)        <span class="comment"># 十六进制 (RRGGBB ， 00~FF)</span></span><br><span class="line">plt.plot(x, np.sin(x - <span class="number">4</span>), color=(<span class="number">1.0</span>,<span class="number">0.2</span>,<span class="number">0.3</span>))    <span class="comment"># RGB元组， 范围在0~1</span></span><br><span class="line">plt.plot(x, np.sin(x - <span class="number">5</span>), color=<span class="string">&#x27;chartreuse&#x27;</span>)   <span class="comment"># HTML颜色名称</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x22a554eb910&gt;]</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_32_1.png" alt="png"></p>
+<p>如果不指定颜色，则会为多条线自动循环使用一组默认的颜色</p>
+<p>与之类似，可以用linestyle调整线条的风格</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, x + <span class="number">0</span>, linestyle=<span class="string">&#x27;solid&#x27;</span>)</span><br><span class="line">plt.plot(x, x + <span class="number">1</span>, linestyle=<span class="string">&#x27;dashed&#x27;</span>)</span><br><span class="line">plt.plot(x, x + <span class="number">2</span>, linestyle=<span class="string">&#x27;dashdot&#x27;</span>)</span><br><span class="line">plt.plot(x, x + <span class="number">3</span>, linestyle=<span class="string">&#x27;dotted&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># For short, you can use the following codes:  简写形式</span></span><br><span class="line">plt.plot(x, x + <span class="number">4</span>, linestyle=<span class="string">&#x27;-&#x27;</span>)  <span class="comment"># solid 实线</span></span><br><span class="line">plt.plot(x, x + <span class="number">5</span>, linestyle=<span class="string">&#x27;--&#x27;</span>) <span class="comment"># dashed 虚线(双短横线)</span></span><br><span class="line">plt.plot(x, x + <span class="number">6</span>, linestyle=<span class="string">&#x27;-.&#x27;</span>) <span class="comment"># dashdot 点划线</span></span><br><span class="line">plt.plot(x, x + <span class="number">7</span>, linestyle=<span class="string">&#x27;:&#x27;</span>);  <span class="comment"># dotted 实点线</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_35_0.png" alt="png"></p>
+<p>更简洁的方式， 将linestyle和color组合起来，作为plt.plot()函数的一个非关键字参数使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, x + <span class="number">0</span>, <span class="string">&#x27;-g&#x27;</span>) <span class="comment"># 绿色实线</span></span><br><span class="line">plt.plot(x, x + <span class="number">1</span>, <span class="string">&#x27;--c&#x27;</span>) <span class="comment"># 青色虚线</span></span><br><span class="line">plt.plot(x, x + <span class="number">2</span>, <span class="string">&#x27;-.k&#x27;</span>) <span class="comment"># dashdot black </span></span><br><span class="line">plt.plot(x, x + <span class="number">3</span>, <span class="string">&#x27;:r&#x27;</span>);  <span class="comment"># dotted red</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_37_0.png" alt="png"></p>
+<p>RGB (Red/Green/Blue) and CMYK (Cyan/Magenta/Yellow/blacK) color systems</p>
+<h2 id="2-调整图形：-坐标轴的上下限"><a href="#2-调整图形：-坐标轴的上下限" class="headerlink" title="2.调整图形： 坐标轴的上下限"></a>2.调整图形： 坐标轴的上下限</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.sin(x))</span><br><span class="line"></span><br><span class="line">plt.xlim(-<span class="number">1</span>, <span class="number">11</span>)</span><br><span class="line">plt.ylim(-<span class="number">1.5</span>, <span class="number">1.5</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(-1.5, 1.5)</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_40_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 逆序设置坐标轴的刻度值</span></span><br><span class="line">plt.plot(x, np.sin(x))</span><br><span class="line"></span><br><span class="line">plt.xlim(<span class="number">10</span>, <span class="number">0</span>)</span><br><span class="line">plt.ylim(<span class="number">1.2</span>, -<span class="number">1.2</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(1.2, -1.2)</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_41_1.png" alt="png"></p>
+<p>还有一个方法是<code>plt.axis()</code>, (不要搞混<code>axes</code>和<code>axis</code>)  通过传入<code>[xmin, xmax, ymin, ymax]</code>用一行代码限制<code>x</code>,<code>y</code>的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.sin(x))</span><br><span class="line">plt.axis([-<span class="number">1</span>,<span class="number">11</span>,-<span class="number">1.5</span>,<span class="number">1.5</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(-1.0, 11.0, -1.5, 1.5)</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_43_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.sin(x))</span><br><span class="line">plt.axis(<span class="string">&#x27;tight&#x27;</span>) <span class="comment"># 按照图形的内容自动收紧坐标轴，不留空白区域</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(0.0, 10.0, -0.9999972954811321, 0.9999996994977832)</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_44_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.sin(x))</span><br><span class="line">plt.axis(<span class="string">&#x27;equal&#x27;</span>) <span class="comment"># 让x轴与y轴单位长度相等，分辨率变为1:1</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(0.0, 10.0, -1.0, 1.0)</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_45_1.png" alt="png"></p>
+<h2 id="3-设置图形标签"><a href="#3-设置图形标签" class="headerlink" title="3.设置图形标签"></a>3.设置图形标签</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.sin(x))</span><br><span class="line">plt.title(<span class="string">&quot;A Sine Curve&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;sin(x)&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_47_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, np.sin(x), <span class="string">&#x27;-g&#x27;</span>, label=<span class="string">&#x27;sin(x)&#x27;</span>)</span><br><span class="line">plt.plot(x, np.cos(x), <span class="string">&#x27;:b&#x27;</span>, label=<span class="string">&#x27;cos(x)&#x27;</span>)</span><br><span class="line">plt.axis(<span class="string">&#x27;equal&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.legend();<span class="comment"># 简单快速创建图例的方法  legend:传说, 传奇, 说明, 图例</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_48_0.png" alt="png"></p>
+<h2 id="PS-Matplotlib陷阱"><a href="#PS-Matplotlib陷阱" class="headerlink" title="PS: Matplotlib陷阱"></a>PS: Matplotlib陷阱</h2><p>大多数plt函数可以转化为ax方法，但有些稍有差别：</p>
+<ul>
+<li><code>plt.xlabel()</code>  → <code>ax.set_xlabel()</code></li>
+<li><code>plt.ylabel()</code> → <code>ax.set_ylabel()</code></li>
+<li><code>plt.xlim()</code>  → <code>ax.set_xlim()</code></li>
+<li><code>plt.ylim()</code> → <code>ax.set_ylim()</code></li>
+<li><code>plt.title()</code> → <code>ax.set_title()</code></li>
+</ul>
+<p>在使用面向对象接口画图时，通常用ax.set()方法一次性设置所有属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ax = plt.axes()</span><br><span class="line">ax.plot(x, np.sin(x))</span><br><span class="line">ax.<span class="built_in">set</span>(xlim=(<span class="number">0</span>,<span class="number">10</span>),ylim=(-<span class="number">2</span>,<span class="number">2</span>),</span><br><span class="line">      xlabel=<span class="string">&#x27;x&#x27;</span>, ylabel=<span class="string">&#x27;sin(x)&#x27;</span>,</span><br><span class="line">      title=<span class="string">&#x27;A simple Plot&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_50_0.png" alt="png"></p>
+<h1 id="4-简易散点图"><a href="#4-简易散点图" class="headerlink" title="4.简易散点图"></a>4.简易散点图</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(<span class="number">0</span>,<span class="number">10</span>,<span class="number">30</span>)</span><br><span class="line">y = np.sin(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x, y, <span class="string">&#x27;o&#x27;</span>,color = <span class="string">&#x27;black&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_52_0.png" alt="png"></p>
+<p>第三个参数是一个字符，表示图形符号的类型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rng = np.random.RandomState(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">for</span> marker <span class="keyword">in</span> [<span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;,&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;^&#x27;</span>, <span class="string">&#x27;&lt;&#x27;</span>, <span class="string">&#x27;&gt;&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;d&#x27;</span>]:</span><br><span class="line">    plt.plot(rng.rand(<span class="number">5</span>), rng.rand(<span class="number">5</span>), marker,</span><br><span class="line">             label=<span class="string">&quot;marker=&#x27;&#123;0&#125;&#x27;&quot;</span>.<span class="built_in">format</span>(marker))</span><br><span class="line">plt.legend(numpoints=<span class="number">1</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">1.8</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_54_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 组合起来</span></span><br><span class="line">plt.plot(x, y, <span class="string">&#x27;-ok&#x27;</span>); <span class="comment"># 直线(-)、圆圈(o)、黑色(k)</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_55_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, y, <span class="string">&#x27;-p&#x27;</span>, color=<span class="string">&#x27;gray&#x27;</span>,</span><br><span class="line">         markersize=<span class="number">15</span>, linewidth=<span class="number">4</span>,</span><br><span class="line">         markerfacecolor=<span class="string">&#x27;white&#x27;</span>,</span><br><span class="line">         markeredgecolor=<span class="string">&#x27;gray&#x27;</span>,</span><br><span class="line">         markeredgewidth=<span class="number">2</span>)</span><br><span class="line">plt.ylim(-<span class="number">1.2</span>, <span class="number">1.2</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_56_0.png" alt="png"></p>
+<h2 id="2-用plt-scatter画散点图"><a href="#2-用plt-scatter画散点图" class="headerlink" title="2.用plt.scatter画散点图"></a>2.用plt.scatter画散点图</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.scatter(x, y, marker=<span class="string">&#x27;o&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;matplotlib.collections.PathCollection at 0x22a567749a0&gt;</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_58_1.png" alt="png"></p>
+<p>plt.scatter 与 plt.plot的主要区别在于，前者更灵活</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rng = np.random.RandomState(<span class="number">0</span>)</span><br><span class="line">x = rng.randn(<span class="number">100</span>)</span><br><span class="line">y = rng.randn(<span class="number">100</span>)</span><br><span class="line">colors = rng.rand(<span class="number">100</span>)</span><br><span class="line">sizes = <span class="number">1000</span> * rng.rand(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">plt.scatter(x, y, c=colors, s=sizes, alpha=<span class="number">0.3</span>,<span class="comment">#透明度为0.3，以显示重叠</span></span><br><span class="line">            cmap=<span class="string">&#x27;viridis&#x27;</span>)</span><br><span class="line">plt.colorbar();  <span class="comment"># show color scale 显示颜色条</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_60_0.png" alt="png"></p>
+<p>注意：颜色自动映射成颜色条 </p>
+<p>例子：鸢尾花</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris = load_iris()</span><br><span class="line">features = iris.data.T</span><br><span class="line"></span><br><span class="line">plt.scatter(features[<span class="number">0</span>],features[<span class="number">1</span>], alpha=<span class="number">0.2</span>,</span><br><span class="line">            s=<span class="number">100</span>*features[<span class="number">3</span>], c=iris.target, cmap=<span class="string">&#x27;viridis&#x27;</span>) <span class="comment"># s 大小代表花瓣的宽度 c 颜色代表不同类别 </span></span><br><span class="line">plt.xlabel(iris.feature_names[<span class="number">0</span>])</span><br><span class="line">plt.ylabel(iris.feature_names[<span class="number">1</span>]);</span><br><span class="line">plt.colorbar();  <span class="comment"># show color scale 显示颜色条</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_63_0.png" alt="png"></p>
+<h2 id="3-plot与scatter：效率对比"><a href="#3-plot与scatter：效率对比" class="headerlink" title="3. plot与scatter：效率对比"></a>3. plot与scatter：效率对比</h2><p>数据量较小的时候，差异不大。而数据量较大时plot效率性能较好，因为scatter要为每个散点进行单独的大小和颜色的配置，而plot只需配置一次。</p>
+<h1 id="5-可视化异常处理"><a href="#5-可视化异常处理" class="headerlink" title="5. 可视化异常处理"></a>5. 可视化异常处理</h1><h2 id="1-基本误差线"><a href="#1-基本误差线" class="headerlink" title="1. 基本误差线"></a>1. 基本误差线</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">50</span>)</span><br><span class="line">dy = <span class="number">0.8</span></span><br><span class="line">y = np.sin(x) + dy * np.random.randn(<span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">plt.errorbar(x, y, yerr=dy, fmt=<span class="string">&#x27;.k&#x27;</span>);<span class="comment"># fmt是一种控制线条和点的外观的代码格式</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_67_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.errorbar(x, y, yerr=dy, fmt=<span class="string">&#x27;o&#x27;</span>,color=<span class="string">&#x27;black&#x27;</span>,</span><br><span class="line">             ecolor=<span class="string">&#x27;lightgray&#x27;</span>, elinewidth=<span class="number">3</span>, capsize=<span class="number">0</span>); <span class="comment">#自定义误差线的风格， 让误差线的颜色比数据点的颜色浅一点效果比较好</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_68_0.png" alt="png"></p>
+<h2 id="2-连续误差"><a href="#2-连续误差" class="headerlink" title="2. 连续误差"></a>2. 连续误差</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># from sklearn.gaussian_process import GaussianProcessRegressor</span></span><br><span class="line"><span class="comment"># # 定义模型和要画的数据</span></span><br><span class="line"><span class="comment"># model = lambda x: x * np.xin(x)</span></span><br><span class="line"><span class="comment"># xdata = np.array([1, 3, 5, 6, 8])</span></span><br><span class="line"><span class="comment"># ydata = model(xdata)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 计算高斯过程拟合结果</span></span><br><span class="line"><span class="comment"># gp = GaussianProcessRegressor()</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="6-密度图与等高线图"><a href="#6-密度图与等高线图" class="headerlink" title="6. 密度图与等高线图"></a>6. 密度图与等高线图</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.style.use(<span class="string">&#x27;seaborn-white&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="三维函数的可视化"><a href="#三维函数的可视化" class="headerlink" title="三维函数的可视化"></a>三维函数的可视化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> np.sin(x) ** <span class="number">10</span> + np.cos(<span class="number">10</span> + y * x) * np.cos(x)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">5</span>, <span class="number">50</span>)</span><br><span class="line">y = np.linspace(<span class="number">0</span>, <span class="number">5</span>, <span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">X,Y = np.meshgrid(x, y) <span class="comment"># 从坐标向量返回坐标矩阵</span></span><br><span class="line">Z = f(X, Y)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.contour(X,Y,Z,colors=<span class="string">&#x27;black&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_76_0.png" alt="png"></p>
+<p>只有一种颜色时，默认使用虚线表示负数，实线表示正数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.contour(X,Y,Z,<span class="number">20</span>,cmap=<span class="string">&#x27;RdGy&#x27;</span>);<span class="comment"># 将数据等分为20份，RdGy Red-Gray的缩写</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_78_0.png" alt="png"></p>
+<p>#plt.cm.<code>&lt;TAB&gt;</code> 查看Matplotlib丰富的配色</p>
+<p>通过plt.contourf()函数来填充等高线图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.contourf(X, Y, Z, <span class="number">20</span>, cmap=<span class="string">&#x27;RdGy&#x27;</span>)</span><br><span class="line">plt.colorbar();</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_81_0.png" alt="png"></p>
+<p>黑色为波峰，红色为波谷。</p>
+<p>接下来通过plt.imshow()函数来将二维数组渲染成渐变图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(Z, extent=[<span class="number">0</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">5</span>], origin=<span class="string">&#x27;lower&#x27;</span>, </span><br><span class="line">           cmap=<span class="string">&#x27;RdGy&#x27;</span>)</span><br><span class="line">plt.colorbar()</span><br><span class="line">plt.axis(aspect=<span class="string">&#x27;image&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;ipython-input-43-cfa84995aaaa&gt;:4: MatplotlibDeprecationWarning: Passing unsupported keyword arguments to axis() will raise a TypeError in 3.3.
+  plt.axis(aspect=&#39;image&#39;);</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_83_1.png" alt="png"></p>
+<p>There are a few potential gotchas with <code>imshow()</code>, however:</p>
+<ul>
+<li><code>plt.imshow()</code> doesn’t accept an <em>x</em> and <em>y</em> grid, so you must manually specify the <em>extent</em> [<em>xmin</em>, <em>xmax</em>, <em>ymin</em>, <em>ymax</em>] of the image on the plot.不支持用xy轴数据来设置网格，而是必须通过extent参数设置图形的坐标范围。</li>
+<li><code>plt.imshow()</code> by default follows the standard image array definition where the origin is in the upper left, not in the lower left as in most contour plots. This must be changed when showing gridded data. 手动设置原点为左下角 origin=’lower’</li>
+<li><code>plt.imshow()</code> will automatically adjust the axis aspect ratio to match the input data; this can be changed by setting, for example, <code>plt.axis(aspect=&#39;image&#39;)</code> to make <em>x</em> and <em>y</em> units match.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">contours = plt.contour(X, Y, Z, <span class="number">3</span>, colors=<span class="string">&#x27;black&#x27;</span>)</span><br><span class="line">plt.clabel(contours, inline=<span class="literal">True</span>, fontsize=<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">plt.imshow(Z, extent=[<span class="number">0</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">5</span>], origin=<span class="string">&#x27;lower&#x27;</span>,</span><br><span class="line">           cmap=<span class="string">&#x27;RdGy&#x27;</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">plt.colorbar();</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_85_0.png" alt="png"></p>
+<h1 id="7-频次直方图、数据区间划分和分布密度"><a href="#7-频次直方图、数据区间划分和分布密度" class="headerlink" title="7. 频次直方图、数据区间划分和分布密度"></a>7. 频次直方图、数据区间划分和分布密度</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = np.random.randn(<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.hist(data); <span class="comment">#频次直方图</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_88_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 个性化频次直方图</span></span><br><span class="line">plt.hist(data, bins=<span class="number">30</span>, alpha=<span class="number">0.5</span>,</span><br><span class="line">         histtype=<span class="string">&#x27;stepfilled&#x27;</span>, color=<span class="string">&#x27;steelblue&#x27;</span>,</span><br><span class="line">         edgecolor=<span class="string">&#x27;none&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_89_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x1 = np.random.normal(<span class="number">0</span>, <span class="number">0.8</span>, <span class="number">1000</span>)</span><br><span class="line">x2 = np.random.normal(-<span class="number">2</span>, <span class="number">1</span>, <span class="number">1000</span>)</span><br><span class="line">x3 = np.random.normal(<span class="number">3</span>, <span class="number">2</span>, <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">kwargs = <span class="built_in">dict</span>(histtype=<span class="string">&#x27;stepfilled&#x27;</span>, alpha=<span class="number">0.3</span>, bins=<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">plt.hist(x1, **kwargs)</span><br><span class="line">plt.hist(x2, **kwargs)</span><br><span class="line">plt.hist(x3, **kwargs);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_90_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">counts, bin_edges = np.histogram(data, bins=<span class="number">5</span>)</span><br><span class="line">print(counts)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[ 31 253 479 216  21]</code></pre>
+<h2 id="二维频次直方图与数据区间划分"><a href="#二维频次直方图与数据区间划分" class="headerlink" title="二维频次直方图与数据区间划分"></a>二维频次直方图与数据区间划分</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mean = [<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">cov = [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>]]</span><br><span class="line">x, y = np.random.multivariate_normal(mean, cov, <span class="number">10000</span>).T</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-plt-hist2d-二维频次直方图"><a href="#1-plt-hist2d-二维频次直方图" class="headerlink" title="1. plt.hist2d: 二维频次直方图"></a>1. plt.hist2d: 二维频次直方图</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plt.hist2d(x, y, bins = <span class="number">30</span>, cmap=<span class="string">&#x27;Blues&#x27;</span>)</span><br><span class="line">cb = plt.colorbar()</span><br><span class="line">cb.set_label(<span class="string">&#x27;counts in bin&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_95_0.png" alt="png"></p>
+<h3 id="2-plt-hexbin：六边形区间划分"><a href="#2-plt-hexbin：六边形区间划分" class="headerlink" title="2. plt.hexbin：六边形区间划分"></a>2. plt.hexbin：六边形区间划分</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.hexbin(x, y, gridsize=<span class="number">30</span>, cmap=<span class="string">&#x27;Blues&#x27;</span>) <span class="comment"># 蜂窝状</span></span><br><span class="line">cb = plt.colorbar(label=<span class="string">&#x27;count in bin&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_97_0.png" alt="png"></p>
+<h3 id="3-核密度估计"><a href="#3-核密度估计" class="headerlink" title="3.核密度估计"></a>3.核密度估计</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> gaussian_kde</span><br><span class="line"></span><br><span class="line"><span class="comment"># fit an array of size [Ndim, Nsamples] 拟合数组维度</span></span><br><span class="line">data = np.vstack([x, y])</span><br><span class="line">kde = gaussian_kde(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># evaluate on a regular grid 用一组规则的网格数据进行拟合</span></span><br><span class="line">xgrid = np.linspace(-<span class="number">3.5</span>, <span class="number">3.5</span>, <span class="number">40</span>)</span><br><span class="line">ygrid = np.linspace(-<span class="number">6</span>, <span class="number">6</span>, <span class="number">40</span>)</span><br><span class="line">Xgrid, Ygrid = np.meshgrid(xgrid, ygrid)</span><br><span class="line">Z = kde.evaluate(np.vstack([Xgrid.ravel(), Ygrid.ravel()]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the result as an image 画出结果图</span></span><br><span class="line">plt.imshow(Z.reshape(Xgrid.shape),</span><br><span class="line">           origin=<span class="string">&#x27;lower&#x27;</span>, aspect=<span class="string">&#x27;auto&#x27;</span>,</span><br><span class="line">           extent=[-<span class="number">3.5</span>, <span class="number">3.5</span>, -<span class="number">6</span>, <span class="number">6</span>],</span><br><span class="line">           cmap=<span class="string">&#x27;Blues&#x27;</span>)</span><br><span class="line">cb = plt.colorbar()</span><br><span class="line">cb.set_label(<span class="string">&quot;density&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_99_0.png" alt="png"></p>
+<h1 id="8-配置图例"><a href="#8-配置图例" class="headerlink" title="8. 配置图例"></a>8. 配置图例</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.style.use(<span class="string">&#x27;classic&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>用plt.legend来创建最简单的图例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">1000</span>)</span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">ax.plot(x, np.sin(x), <span class="string">&#x27;-b&#x27;</span>, label=<span class="string">&#x27;Sine&#x27;</span>)</span><br><span class="line">ax.plot(x, np.cos(x), <span class="string">&#x27;--r&#x27;</span>, label=<span class="string">&#x27;Cosine&#x27;</span>)</span><br><span class="line">ax.axis(<span class="string">&#x27;equal&#x27;</span>)</span><br><span class="line">leg = ax.legend();</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_103_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ax.legend(loc=<span class="string">&#x27;upper left&#x27;</span>, frameon=<span class="literal">False</span>) <span class="comment"># 设置图例的位置为左上方，取消边框</span></span><br><span class="line">fig</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_104_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ax.legend(frameon=<span class="literal">False</span>, loc=<span class="string">&#x27;lower center&#x27;</span>, ncol = <span class="number">2</span>) <span class="comment">#用ncol参数设置图例的标签列数</span></span><br><span class="line">fig</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_105_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#圆角矩形fancybox、增加阴影shadow、改变外边框透明度framealpha、改变文字间距borderpad</span></span><br><span class="line">ax.legend(fancybox =<span class="literal">True</span>, framealpha=<span class="number">1</span>, shadow=<span class="literal">True</span>, borderpad=<span class="number">1</span>)</span><br><span class="line">fig</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_106_0.png" alt="png"></p>
+<h2 id="1-选择图例显示的元素"><a href="#1-选择图例显示的元素" class="headerlink" title="1.选择图例显示的元素"></a>1.选择图例显示的元素</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">y = np.sin(x[:, np.newaxis] + np.pi * np.arange(<span class="number">0</span>, <span class="number">2</span>, <span class="number">0.5</span>))</span><br><span class="line">lines = plt.plot(x, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># lines is a list of plt.Line2D instances lines变量是一组plt.Line2D的实例</span></span><br><span class="line">plt.legend(lines[:<span class="number">2</span>], [<span class="string">&#x27;first&#x27;</span>, <span class="string">&#x27;second&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_108_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(x, y[:, <span class="number">0</span>], label=<span class="string">&#x27;first&#x27;</span>)</span><br><span class="line">plt.plot(x, y[:, <span class="number">1</span>], label=<span class="string">&#x27;second&#x27;</span>)</span><br><span class="line">plt.plot(x, y[:, <span class="number">2</span>:])</span><br><span class="line">plt.legend(framealpha=<span class="number">1</span>, frameon=<span class="literal">True</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_109_0.png" alt="png"></p>
+<h2 id="2-在图例中显示不同尺寸的点"><a href="#2-在图例中显示不同尺寸的点" class="headerlink" title="2. 在图例中显示不同尺寸的点"></a>2. 在图例中显示不同尺寸的点</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">cities = pd.read_csv(<span class="string">&#x27;data/california_cities.csv&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Extract the data we&#x27;re interested in 提取感兴趣的数据</span></span><br><span class="line">lat, lon = cities[<span class="string">&#x27;latd&#x27;</span>], cities[<span class="string">&#x27;longd&#x27;</span>]</span><br><span class="line">population, area = cities[<span class="string">&#x27;population_total&#x27;</span>], cities[<span class="string">&#x27;area_total_km2&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Scatter the points, using size and color but no label 用不同尺寸和颜色的散点图表示数据，但是不带标签</span></span><br><span class="line">plt.scatter(lon, lat, label=<span class="literal">None</span>,</span><br><span class="line">            c=np.log10(population), cmap=<span class="string">&#x27;viridis&#x27;</span>,</span><br><span class="line">            s=area, linewidth=<span class="number">0</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">plt.axis(aspect=<span class="string">&#x27;equal&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;longitude&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;latitude&#x27;</span>)</span><br><span class="line">plt.colorbar(label=<span class="string">&#x27;log$_&#123;10&#125;$(population)&#x27;</span>)</span><br><span class="line">plt.clim(<span class="number">3</span>, <span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Here we create a legend: 下面创建一个图例</span></span><br><span class="line"><span class="comment"># we&#x27;ll plot empty lists with the desired size and label 画一些带标签和尺寸的空列表</span></span><br><span class="line"><span class="keyword">for</span> area <span class="keyword">in</span> [<span class="number">100</span>, <span class="number">300</span>, <span class="number">500</span>]:</span><br><span class="line">    plt.scatter([], [], c=<span class="string">&#x27;k&#x27;</span>, alpha=<span class="number">0.3</span>, s=area,</span><br><span class="line">                label=<span class="built_in">str</span>(area) + <span class="string">&#x27; km$^2$&#x27;</span>)</span><br><span class="line">plt.legend(scatterpoints=<span class="number">1</span>, frameon=<span class="literal">False</span>, labelspacing=<span class="number">1</span>, title=<span class="string">&#x27;City Area&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">&#x27;California Cities: Area and Population&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;ipython-input-61-69843dfa9cca&gt;:12: MatplotlibDeprecationWarning: Passing unsupported keyword arguments to axis() will raise a TypeError in 3.3.
+  plt.axis(aspect=&#39;equal&#39;)</code></pre>
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_111_1.png" alt="png"></p>
+<p>美国加州各城市的地理位置、面积和人口数量</p>
+<h2 id="3-同时显示多个图例"><a href="#3-同时显示多个图例" class="headerlink" title="3.同时显示多个图例"></a>3.同时显示多个图例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">fig, ax = plt.subplots()</span><br><span class="line"></span><br><span class="line">lines = []</span><br><span class="line">styles = [<span class="string">&#x27;-&#x27;</span>, <span class="string">&#x27;--&#x27;</span>, <span class="string">&#x27;-.&#x27;</span>, <span class="string">&#x27;:&#x27;</span>]</span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">    lines += ax.plot(x, np.sin(x - i * np.pi / <span class="number">2</span>),</span><br><span class="line">                     styles[i], color=<span class="string">&#x27;black&#x27;</span>)</span><br><span class="line">ax.axis(<span class="string">&#x27;equal&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># specify the lines and labels of the first legend 设置第一个图例要显示的线条和标签</span></span><br><span class="line">ax.legend(lines[:<span class="number">2</span>], [<span class="string">&#x27;line A&#x27;</span>, <span class="string">&#x27;line B&#x27;</span>],</span><br><span class="line">          loc=<span class="string">&#x27;upper right&#x27;</span>, frameon=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create the second legend and add the artist manually. 创建第二个图例，通过add_artist() 方法添加到图上</span></span><br><span class="line"><span class="keyword">from</span> matplotlib.legend <span class="keyword">import</span> Legend</span><br><span class="line">leg = Legend(ax, lines[<span class="number">2</span>:], [<span class="string">&#x27;line C&#x27;</span>, <span class="string">&#x27;line D&#x27;</span>],</span><br><span class="line">             loc=<span class="string">&#x27;lower right&#x27;</span>, frameon=<span class="literal">False</span>)</span><br><span class="line">ax.add_artist(leg);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/image/output_114_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Matplotlib/" rel="tag"># Matplotlib</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/26/Jupyter%20Notebook%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/" rel="prev" title="jupeterNotebook常用快捷键">
+      <i class="fa fa-chevron-left"></i> jupeterNotebook常用快捷键
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/10/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/" rel="next" title="Tensorflow教程之图像分类">
+      Tensorflow教程之图像分类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-text">1.常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AF%BC%E5%85%A5Matplotlib"><span class="nav-text">1.导入Matplotlib</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%AE%BE%E7%BD%AE%E7%BB%98%E5%9B%BE%E6%A0%B7%E5%BC%8F"><span class="nav-text">2.设置绘图样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%A8%E4%B8%8D%E7%94%A8show-%EF%BC%9F-%E5%A6%82%E4%BD%95%E6%98%BE%E7%A4%BA%E5%9B%BE%E5%BD%A2"><span class="nav-text">3.用不用show()？ 如何显示图形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8IPython-Notebook%E4%B8%AD%E7%94%BB%E5%9B%BE"><span class="nav-text">在IPython Notebook中画图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%B0%86%E5%9B%BE%E5%BD%A2%E4%BF%9D%E5%AD%98%E4%B8%BA%E6%96%87%E4%BB%B6"><span class="nav-text">4.将图形保存为文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%B8%A4%E7%A7%8D%E7%94%BB%E5%9B%BE%E6%8E%A5%E5%8F%A3"><span class="nav-text">2.两种画图接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MATLAB%E9%A3%8E%E6%A0%BC%E6%8E%A5%E5%8F%A3"><span class="nav-text">1.MATLAB风格接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%8E%A5%E5%8F%A3"><span class="nav-text">2.面向对象接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%AE%80%E6%98%93%E7%BA%BF%E5%BD%A2%E5%9B%BE"><span class="nav-text">3.简易线形图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%B0%83%E6%95%B4%E5%9B%BE%E5%BD%A2%EF%BC%9A%E7%BA%BF%E6%9D%A1%E7%9A%84%E9%A2%9C%E8%89%B2%E4%B8%8E%E9%A3%8E%E6%A0%BC"><span class="nav-text">1.调整图形：线条的颜色与风格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%B0%83%E6%95%B4%E5%9B%BE%E5%BD%A2%EF%BC%9A-%E5%9D%90%E6%A0%87%E8%BD%B4%E7%9A%84%E4%B8%8A%E4%B8%8B%E9%99%90"><span class="nav-text">2.调整图形： 坐标轴的上下限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AE%BE%E7%BD%AE%E5%9B%BE%E5%BD%A2%E6%A0%87%E7%AD%BE"><span class="nav-text">3.设置图形标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PS-Matplotlib%E9%99%B7%E9%98%B1"><span class="nav-text">PS: Matplotlib陷阱</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%AE%80%E6%98%93%E6%95%A3%E7%82%B9%E5%9B%BE"><span class="nav-text">4.简易散点图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%94%A8plt-scatter%E7%94%BB%E6%95%A3%E7%82%B9%E5%9B%BE"><span class="nav-text">2.用plt.scatter画散点图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-plot%E4%B8%8Escatter%EF%BC%9A%E6%95%88%E7%8E%87%E5%AF%B9%E6%AF%94"><span class="nav-text">3. plot与scatter：效率对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-text">5. 可视化异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%AF%AF%E5%B7%AE%E7%BA%BF"><span class="nav-text">1. 基本误差线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%BF%9E%E7%BB%AD%E8%AF%AF%E5%B7%AE"><span class="nav-text">2. 连续误差</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%AF%86%E5%BA%A6%E5%9B%BE%E4%B8%8E%E7%AD%89%E9%AB%98%E7%BA%BF%E5%9B%BE"><span class="nav-text">6. 密度图与等高线图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-text">三维函数的可视化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E9%A2%91%E6%AC%A1%E7%9B%B4%E6%96%B9%E5%9B%BE%E3%80%81%E6%95%B0%E6%8D%AE%E5%8C%BA%E9%97%B4%E5%88%92%E5%88%86%E5%92%8C%E5%88%86%E5%B8%83%E5%AF%86%E5%BA%A6"><span class="nav-text">7. 频次直方图、数据区间划分和分布密度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E9%A2%91%E6%AC%A1%E7%9B%B4%E6%96%B9%E5%9B%BE%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%8C%BA%E9%97%B4%E5%88%92%E5%88%86"><span class="nav-text">二维频次直方图与数据区间划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-plt-hist2d-%E4%BA%8C%E7%BB%B4%E9%A2%91%E6%AC%A1%E7%9B%B4%E6%96%B9%E5%9B%BE"><span class="nav-text">1. plt.hist2d: 二维频次直方图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-plt-hexbin%EF%BC%9A%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%8C%BA%E9%97%B4%E5%88%92%E5%88%86"><span class="nav-text">2. plt.hexbin：六边形区间划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%A0%B8%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1"><span class="nav-text">3.核密度估计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E9%85%8D%E7%BD%AE%E5%9B%BE%E4%BE%8B"><span class="nav-text">8. 配置图例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9%E5%9B%BE%E4%BE%8B%E6%98%BE%E7%A4%BA%E7%9A%84%E5%85%83%E7%B4%A0"><span class="nav-text">1.选择图例显示的元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9C%A8%E5%9B%BE%E4%BE%8B%E4%B8%AD%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E5%B0%BA%E5%AF%B8%E7%9A%84%E7%82%B9"><span class="nav-text">2. 在图例中显示不同尺寸的点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%90%8C%E6%97%B6%E6%98%BE%E7%A4%BA%E5%A4%9A%E4%B8%AA%E5%9B%BE%E4%BE%8B"><span class="nav-text">3.同时显示多个图例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ACui"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">ACui</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ACui96" title="Github → https:&#x2F;&#x2F;github.com&#x2F;ACui96" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xinfeng.cui@foxmail.com" title="E-Mail → mailto:xinfeng.cui@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ACui</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">49k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">45 分钟</span>
+</div>
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https:////cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'W24XYFurW184OnoqRB2MljBV-gzGzoHsz',
+      appKey     : '23RxzHRPxLlSTl0WYTuOWb3a',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

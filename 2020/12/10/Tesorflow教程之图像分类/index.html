@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x-32-acui.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-acui.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="123456789import matplotlib.pyplot as pltimport numpy as npimport osimport PILimport tensorflow as tffrom tensorflow import kerasfrom tensorflow.keras import layersfrom tensorflow.keras.models import S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tensorflow教程之图像分类">
+<meta property="og:url" content="http://example.com/2020/12/10/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/index.html">
+<meta property="og:site_name" content="Acui&#39;s Blog">
+<meta property="og:description" content="123456789import matplotlib.pyplot as pltimport numpy as npimport osimport PILimport tensorflow as tffrom tensorflow import kerasfrom tensorflow.keras import layersfrom tensorflow.keras.models import S">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_4_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_5_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_7_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_8_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_18_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_39_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_45_0.png">
+<meta property="og:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_53_0.png">
+<meta property="article:published_time" content="2020-12-10T01:51:00.000Z">
+<meta property="article:modified_time" content="2020-12-10T01:53:39.675Z">
+<meta property="article:author" content="ACui">
+<meta property="article:tag" content="Tensorflow">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_4_0.png">
+
+<link rel="canonical" href="http://example.com/2020/12/10/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Tensorflow教程之图像分类 | Acui's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Acui's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Acui's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+
+    
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/10/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="ACui">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Acui's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Tensorflow教程之图像分类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-10 09:51:00 / 修改时间：09:53:39" itemprop="dateCreated datePublished" datetime="2020-12-10T09:51:00+08:00">2020-12-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/10/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/10/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>15k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> PIL</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.models <span class="keyword">import</span> Sequential</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#下载 花 图片数据集  下载完成后目录如下</span></span><br><span class="line"><span class="comment"># flower_photo/</span></span><br><span class="line"><span class="comment">#   daisy/</span></span><br><span class="line"><span class="comment">#   dandelion/</span></span><br><span class="line"><span class="comment">#   roses/</span></span><br><span class="line"><span class="comment">#   sunflowers/</span></span><br><span class="line"><span class="comment">#   tulips/</span></span><br><span class="line"><span class="keyword">import</span> pathlib</span><br><span class="line">dataset_url = <span class="string">&quot;https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz&quot;</span></span><br><span class="line">data_dir = tf.keras.utils.get_file(<span class="string">&#x27;flower_photos&#x27;</span>, origin=dataset_url, untar=<span class="literal">True</span>)</span><br><span class="line">data_dir = pathlib.Path(data_dir)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Downloading data from https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz
+228818944/228813984 [==============================] - 187s 1us/step</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">image_count = <span class="built_in">len</span>(<span class="built_in">list</span>(data_dir.glob(<span class="string">&#x27;*/*.jpg&#x27;</span>)))</span><br><span class="line">print(image_count)</span><br></pre></td></tr></table></figure>
+
+<pre><code>3670</code></pre>
+<p>玫瑰花：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">roses = <span class="built_in">list</span>(data_dir.glob(<span class="string">&#x27;roses/*&#x27;</span>))</span><br><span class="line">PIL.Image.<span class="built_in">open</span>(<span class="built_in">str</span>(roses[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_4_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PIL.Image.<span class="built_in">open</span>(<span class="built_in">str</span>(roses[<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_5_0.png" alt="png"></p>
+<p>郁金香：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tulips = <span class="built_in">list</span>(data_dir.glob(<span class="string">&#x27;tulips/*&#x27;</span>))</span><br><span class="line">PIL.Image.<span class="built_in">open</span>(<span class="built_in">str</span>(tulips[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_7_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PIL.Image.<span class="built_in">open</span>(<span class="built_in">str</span>(tulips[<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_8_0.png" alt="png"></p>
+<h1 id="用keras-preprocessing-加载图片"><a href="#用keras-preprocessing-加载图片" class="headerlink" title="用keras.preprocessing 加载图片"></a>用keras.preprocessing 加载图片</h1><h2 id="创建数据集"><a href="#创建数据集" class="headerlink" title="创建数据集"></a>创建数据集</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">batch_size = <span class="number">32</span></span><br><span class="line">img_height = <span class="number">180</span></span><br><span class="line">img_width = <span class="number">180</span></span><br></pre></td></tr></table></figure>
+
+<p>在开发模型时，最好使用验证拆分。让我们将80％的图像用于训练，将20％的图像用于验证。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">train_ds = tf.keras.preprocessing.image_dataset_from_directory(</span><br><span class="line">  data_dir,</span><br><span class="line">  validation_split=<span class="number">0.2</span>,</span><br><span class="line">  subset=<span class="string">&quot;training&quot;</span>,</span><br><span class="line">  seed=<span class="number">123</span>,</span><br><span class="line">  image_size=(img_height,img_width),</span><br><span class="line">  batch_size=batch_size)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Found 3670 files belonging to 5 classes.
+Using 2936 files for training.</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val_ds = tf.keras.preprocessing.image_dataset_from_directory(</span><br><span class="line">  data_dir,</span><br><span class="line">  validation_split=<span class="number">0.2</span>,</span><br><span class="line">  subset=<span class="string">&quot;validation&quot;</span>,</span><br><span class="line">  seed=<span class="number">123</span>,</span><br><span class="line">  image_size=(img_height,img_width),</span><br><span class="line">  batch_size=batch_size)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Found 3670 files belonging to 5 classes.
+Using 734 files for validation.</code></pre>
+<p>可以在这些数据集的class_names属性中找到类名称。这些以字母顺序对应于目录名称。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class_names = train_ds.class_names</span><br><span class="line">print(class_names)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[&#39;daisy&#39;, &#39;dandelion&#39;, &#39;roses&#39;, &#39;sunflowers&#39;, &#39;tulips&#39;]</code></pre>
+<h1 id="可视化数据"><a href="#可视化数据" class="headerlink" title="可视化数据"></a>可视化数据</h1><p>这是训练数据集中的前9张图像。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line"><span class="keyword">for</span> images, labels <span class="keyword">in</span> train_ds.take(<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">9</span>):</span><br><span class="line">        ax = plt.subplot(<span class="number">3</span>, <span class="number">3</span>, i + <span class="number">1</span>)</span><br><span class="line">        plt.imshow(images[i].numpy().astype(<span class="string">&#x27;uint8&#x27;</span>))</span><br><span class="line">        plt.title(class_names[labels[i]])</span><br><span class="line">        plt.axis(<span class="string">&#x27;off&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_18_0.png" alt="png"></p>
+<p>稍后通过将这些数据集传递给model.fit来训练模型。如果愿意，还可以手动遍历数据集并检索成批图像：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> image_batch, labels_batch <span class="keyword">in</span> train_ds:</span><br><span class="line">    print(image_batch.shape)</span><br><span class="line">    print(labels_batch.shape)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>(32, 180, 180, 3)
+(32,)</code></pre>
+<p><code>image_batch</code>是形状（32、180、180、3）的张量。这是一批32张形状为180x180x3的图像（最后一个尺寸是指色彩通道RGB）。 <code>label_batch</code>是形状（32，）的张量，它们是32个图像的对应标签。</p>
+<p>可以在<code>image_batch</code>和<code>labels_batch</code>张量上调用<code>.numpy（）</code>，以将它们转换为<code>numpy.ndarray</code>。</p>
+<h1 id="配置数据集以提高性能"><a href="#配置数据集以提高性能" class="headerlink" title="配置数据集以提高性能"></a>配置数据集以提高性能</h1><p>让我们确保使用缓冲预取，以便您可以从磁盘产生数据而不会阻塞I / O。这是加载数据时应使用的两种重要方法:</p>
+<ul>
+<li>在第一个时期将图像从磁盘加载后，<code>Dataset.cache（）</code>会将图像保留在内存中。这将确保在训练模型时数据集不会成为瓶颈。如果您的数据集太大而无法容纳到内存中，则也可以使用此方法创建高性能的磁盘缓存。 </li>
+<li>训练时，<code>Dataset.prefetch（）</code>与数据预处理和模型执行重叠。 </li>
+</ul>
+<p>有兴趣的读者可以在数据性能指南中了解有关这两种方法以及如何将数据缓存到磁盘的更多信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AUTOTUNE = tf.data.experimental.AUTOTUNE</span><br><span class="line"></span><br><span class="line">train_ds = train_ds.cache().shuffle(<span class="number">1000</span>).prefetch(buffer_size=AUTOTUNE)</span><br><span class="line">val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)</span><br></pre></td></tr></table></figure>
+
+<h1 id="标准化数据"><a href="#标准化数据" class="headerlink" title="标准化数据"></a>标准化数据</h1><p>RGB通道值在<code>[0，255]</code>范围内。这对于神经网络而言并不理想；通常，您应该设法减小输入值。在这里，您将使用“重缩放”图层将值标准化为<code>[0，1]</code>范围。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">normallization_layer = layers.experimental.preprocessing.Rescaling(<span class="number">1.</span>/<span class="number">255</span>)</span><br></pre></td></tr></table></figure>
+
+<p>注意：本节中介绍的Keras预处理实用程序和图层目前处于实验阶段，可能会更改。</p>
+<p>有两种使用此层的方法。您可以通过调用map将其应用于数据集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">normalized_ds = train_ds.<span class="built_in">map</span>(<span class="keyword">lambda</span> x, y: (normallization_layer(x), y))</span><br><span class="line">image_batch, labels_batch = <span class="built_in">next</span>(<span class="built_in">iter</span>(normalized_ds))</span><br><span class="line">first_image = image_batch[<span class="number">0</span>]</span><br><span class="line"><span class="comment"># 注意，像素值现在位于“ [0,1]”中</span></span><br><span class="line">print(np.<span class="built_in">min</span>(first_image), np.<span class="built_in">max</span>(first_image))</span><br></pre></td></tr></table></figure>
+
+<pre><code>0.0 1.0</code></pre>
+<h1 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h1><p>该模型由三个卷积块组成，每个卷积块中都有一个最大池层。有一个完全连接的层，上面有128个单元，可通过relu激活功能激活。尚未针对高精度调整此模型，本教程的目的是展示一种标准方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">num_classes = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">model = Sequential([</span><br><span class="line">    layers.experimental.preprocessing.Rescaling(<span class="number">1.</span>/<span class="number">255</span>,input_shape=(img_height, img_width, <span class="number">3</span>)),</span><br><span class="line">    layers.Conv2D(<span class="number">16</span>, <span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    layers.MaxPooling2D(),</span><br><span class="line">    layers.Conv2D(<span class="number">32</span>, <span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    layers.MaxPooling2D(),</span><br><span class="line">    layers.Conv2D(<span class="number">64</span>, <span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    layers.MaxPooling2D(),</span><br><span class="line">    layers.Flatten(),</span><br><span class="line">    layers.Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    layers.Dense(num_classes)</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<h1 id="编译模型"><a href="#编译模型" class="headerlink" title="编译模型"></a>编译模型</h1><p>在本教程中，选择优化器。<code>Adam</code>优化器和损失.<code>SparseCategoricalCrossentropy</code>损失函数。要查看每个训练时期的训练和验证准确性，请传递<code>metrics</code>参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&#x27;adam&#x27;</span>,</span><br><span class="line">              loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=<span class="literal">True</span>),</span><br><span class="line">              metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h1 id="模型摘要"><a href="#模型摘要" class="headerlink" title="模型摘要"></a>模型摘要</h1><p>使用模型的摘要方法查看网络的所有层：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+
+<pre><code>Model: &quot;sequential_1&quot;
+_________________________________________________________________
+Layer (type)                 https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output Shape              Param #   
+=================================================================
+rescaling_2 (Rescaling)      (None, 180, 180, 3)       0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 180, 180, 16)      448       
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 90, 90, 16)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 90, 90, 32)        4640      
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 45, 45, 32)        0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 45, 45, 64)        18496     
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 22, 22, 64)        0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 30976)             0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 128)               3965056   
+_________________________________________________________________
+dense_3 (Dense)              (None, 5)                 645       
+=================================================================
+Total params: 3,989,285
+Trainable params: 3,989,285
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+<h1 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">epochs=<span class="number">10</span></span><br><span class="line">history = model.fit(</span><br><span class="line">  train_ds,</span><br><span class="line">  validation_data=val_ds,</span><br><span class="line">  epochs=epochs</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Epoch 1/10
+92/92 [==============================] - 37s 406ms/step - loss: 1.3758 - accuracy: 0.4149 - val_loss: 1.1252 - val_accuracy: 0.5790
+Epoch 2/10
+92/92 [==============================] - 33s 356ms/step - loss: 1.0315 - accuracy: 0.5882 - val_loss: 1.0381 - val_accuracy: 0.5599
+Epoch 3/10
+92/92 [==============================] - 33s 357ms/step - loss: 0.8540 - accuracy: 0.6754 - val_loss: 0.9711 - val_accuracy: 0.6226
+Epoch 4/10
+92/92 [==============================] - 31s 335ms/step - loss: 0.6296 - accuracy: 0.7643 - val_loss: 0.8998 - val_accuracy: 0.6526
+Epoch 5/10
+92/92 [==============================] - 31s 333ms/step - loss: 0.4204 - accuracy: 0.8552 - val_loss: 1.0394 - val_accuracy: 0.6281
+Epoch 6/10
+92/92 [==============================] - 30s 331ms/step - loss: 0.2592 - accuracy: 0.9108 - val_loss: 1.2954 - val_accuracy: 0.6022
+Epoch 7/10
+92/92 [==============================] - 31s 332ms/step - loss: 0.1721 - accuracy: 0.9486 - val_loss: 1.4653 - val_accuracy: 0.6131
+Epoch 8/10
+92/92 [==============================] - 31s 335ms/step - loss: 0.0958 - accuracy: 0.9728 - val_loss: 1.4488 - val_accuracy: 0.6308
+Epoch 9/10
+92/92 [==============================] - 31s 338ms/step - loss: 0.0622 - accuracy: 0.9847 - val_loss: 1.8301 - val_accuracy: 0.6417
+Epoch 10/10
+92/92 [==============================] - 31s 332ms/step - loss: 0.0490 - accuracy: 0.9874 - val_loss: 1.9375 - val_accuracy: 0.6335</code></pre>
+<h1 id="可视化训练结果"><a href="#可视化训练结果" class="headerlink" title="可视化训练结果"></a>可视化训练结果</h1><p>在训练和验证集上创建损失和准确性图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">acc = history.history[<span class="string">&#x27;accuracy&#x27;</span>]</span><br><span class="line">val_acc = history.history[<span class="string">&#x27;val_accuracy&#x27;</span>]</span><br><span class="line"></span><br><span class="line">loss = history.history[<span class="string">&#x27;loss&#x27;</span>]</span><br><span class="line">val_loss = history.history[<span class="string">&#x27;val_loss&#x27;</span>]</span><br><span class="line"></span><br><span class="line">epochs_range = <span class="built_in">range</span>(epochs)</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">plt.plot(epochs_range, acc, label=<span class="string">&#x27;Training Accuracy&#x27;</span>)</span><br><span class="line">plt.plot(epochs_range, val_acc, label=<span class="string">&#x27;Validation Accuracy&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Training and Validtion Accuracy&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">plt.plot(epochs_range, loss, label=<span class="string">&#x27;Training Loss&#x27;</span>)</span><br><span class="line">plt.plot(epochs_range, val_loss, label=<span class="string">&#x27;Validation Loss&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Training and Validtion Loss&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_39_0.png" alt="png"></p>
+<p>从图中可以看出，训练准确性和验证准确性相差很大，模型仅在验证集上获得了约60％的准确性。</p>
+<p>让我们看一下出了什么问题，并尝试提高模型的整体性能。</p>
+<h1 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h1><p>在上面的图中，训练精度随时间呈线性增长，而验证精度在训练过程中停滞在60％左右。同样，训练和验证准确性之间的准确性差异也很明显，这是过度拟合的标志。</p>
+<p>当训练样本数量较少时，模型有时会从训练样本中的噪音或不必要的细节中学习，以至于对新样本上的模型性能产生负面影响。这种现象称为过拟合。这意味着该模型很难推广到新的数据集。</p>
+<p>在训练过程中，有多种方法可以解决过拟合的问题。在本教程中，您将使用数据扩充并将Dropout添加到模型中。</p>
+<h1 id="数据扩充"><a href="#数据扩充" class="headerlink" title="数据扩充"></a>数据扩充</h1><p>当训练样本数量很少时，通常会发生过度拟合。数据扩充采用通过使用随机变换对现有示例进行增强以生成看起来可信的图像来生成其他训练数据的方法。这有助于使模型暴露于数据的更多方面，并且可以更好地进行概括。</p>
+<p>您将使用实验性Keras预处理层实现数据扩充。这些可以像其他层一样包含在模型中，并在GPU上运行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data_augmentation = keras.Sequential([</span><br><span class="line">    layers.experimental.preprocessing.RandomFlip(<span class="string">&quot;horizontal&quot;</span>,</span><br><span class="line">                                                 input_shape=(img_height,</span><br><span class="line">                                                              img_width,</span><br><span class="line">                                                              <span class="number">3</span>)),</span><br><span class="line">    layers.experimental.preprocessing.RandomRotation(<span class="number">0.1</span>),</span><br><span class="line">    layers.experimental.preprocessing.RandomZoom(<span class="number">0.1</span>),</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<p>让我们通过将数据扩充多次应用于同一幅图像来可视化化一些增强示例的外观：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line"><span class="keyword">for</span> images, _ <span class="keyword">in</span> train_ds.take(<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">9</span>):</span><br><span class="line">        augmented_images = data_augmentation(images)</span><br><span class="line">        ax = plt.subplot(<span class="number">3</span>, <span class="number">3</span>, i + <span class="number">1</span>)</span><br><span class="line">        plt.imshow(augmented_images[<span class="number">0</span>].numpy().astype(<span class="string">&quot;uint8&quot;</span>))</span><br><span class="line">        plt.axis(<span class="string">&quot;off&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_45_0.png" alt="png"></p>
+<h1 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h1><p>减少过度拟合的另一种技术是将Dropout引入网络，这是一种正则化形式</p>
+<p>将Dropout应用于图层时，它会在训练过程中从该图层中随机退出（通过将激活设置为零）许多输出单元。Dropout采用分数形式作为其输入值，形式为0.1、0.2、0.4等。这意味着从所施加的层中随机退出输出单元的10％，20％或40％。</p>
+<p>让我们使用layers.Dropout创建一个新的神经网络，然后使用增强图像对其进行训练。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential([</span><br><span class="line">  data_augmentation,</span><br><span class="line">  layers.experimental.preprocessing.Rescaling(<span class="number">1.</span>/<span class="number">255</span>),</span><br><span class="line">  layers.Conv2D(<span class="number">16</span>, <span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">  layers.MaxPooling2D(),</span><br><span class="line">  layers.Conv2D(<span class="number">32</span>, <span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">  layers.MaxPooling2D(),</span><br><span class="line">  layers.Conv2D(<span class="number">64</span>, <span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">  layers.MaxPooling2D(),</span><br><span class="line">  layers.Dropout(<span class="number">0.2</span>),</span><br><span class="line">  layers.Flatten(),</span><br><span class="line">  layers.Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">  layers.Dense(num_classes)</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<h1 id="编译并训练模型"><a href="#编译并训练模型" class="headerlink" title="编译并训练模型"></a>编译并训练模型</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&#x27;adam&#x27;</span>,</span><br><span class="line">              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=<span class="literal">True</span>),</span><br><span class="line">              metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+
+<pre><code>Model: &quot;sequential_3&quot;
+_________________________________________________________________
+Layer (type)                 https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output Shape              Param #   
+=================================================================
+sequential_2 (Sequential)    (None, 180, 180, 3)       0         
+_________________________________________________________________
+rescaling_3 (Rescaling)      (None, 180, 180, 3)       0         
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 180, 180, 16)      448       
+_________________________________________________________________
+max_pooling2d_6 (MaxPooling2 (None, 90, 90, 16)        0         
+_________________________________________________________________
+conv2d_7 (Conv2D)            (None, 90, 90, 32)        4640      
+_________________________________________________________________
+max_pooling2d_7 (MaxPooling2 (None, 45, 45, 32)        0         
+_________________________________________________________________
+conv2d_8 (Conv2D)            (None, 45, 45, 64)        18496     
+_________________________________________________________________
+max_pooling2d_8 (MaxPooling2 (None, 22, 22, 64)        0         
+_________________________________________________________________
+dropout (Dropout)            (None, 22, 22, 64)        0         
+_________________________________________________________________
+flatten_2 (Flatten)          (None, 30976)             0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 128)               3965056   
+_________________________________________________________________
+dense_5 (Dense)              (None, 5)                 645       
+=================================================================
+Total params: 3,989,285
+Trainable params: 3,989,285
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">epochs = <span class="number">15</span></span><br><span class="line">history = model.fit(</span><br><span class="line">  train_ds,</span><br><span class="line">  validation_data=val_ds,</span><br><span class="line">  epochs=epochs</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Epoch 1/15
+92/92 [==============================] - 36s 393ms/step - loss: 1.2766 - accuracy: 0.4503 - val_loss: 1.0478 - val_accuracy: 0.5981
+Epoch 2/15
+92/92 [==============================] - 35s 379ms/step - loss: 1.0225 - accuracy: 0.6032 - val_loss: 0.9281 - val_accuracy: 0.6417
+Epoch 3/15
+92/92 [==============================] - 36s 393ms/step - loss: 0.9229 - accuracy: 0.6417 - val_loss: 0.9127 - val_accuracy: 0.6526
+Epoch 4/15
+92/92 [==============================] - 35s 381ms/step - loss: 0.8171 - accuracy: 0.6819 - val_loss: 0.8711 - val_accuracy: 0.6689
+Epoch 5/15
+92/92 [==============================] - 33s 364ms/step - loss: 0.7820 - accuracy: 0.6989 - val_loss: 0.7862 - val_accuracy: 0.6907
+Epoch 6/15
+92/92 [==============================] - 33s 363ms/step - loss: 0.7645 - accuracy: 0.7071 - val_loss: 0.7904 - val_accuracy: 0.6975
+Epoch 7/15
+92/92 [==============================] - 33s 364ms/step - loss: 0.7090 - accuracy: 0.7285 - val_loss: 0.7444 - val_accuracy: 0.7071
+Epoch 8/15
+92/92 [==============================] - 34s 364ms/step - loss: 0.6739 - accuracy: 0.7439 - val_loss: 0.7536 - val_accuracy: 0.6989
+Epoch 9/15
+92/92 [==============================] - 33s 364ms/step - loss: 0.6470 - accuracy: 0.7633 - val_loss: 0.8352 - val_accuracy: 0.6717
+Epoch 10/15
+92/92 [==============================] - 34s 369ms/step - loss: 0.6309 - accuracy: 0.7612 - val_loss: 0.7558 - val_accuracy: 0.7112
+Epoch 11/15
+92/92 [==============================] - 35s 384ms/step - loss: 0.6027 - accuracy: 0.7779 - val_loss: 0.7261 - val_accuracy: 0.7125
+Epoch 12/15
+92/92 [==============================] - 36s 392ms/step - loss: 0.5655 - accuracy: 0.7864 - val_loss: 0.7181 - val_accuracy: 0.7084
+Epoch 13/15
+92/92 [==============================] - 36s 391ms/step - loss: 0.5520 - accuracy: 0.7956 - val_loss: 0.7006 - val_accuracy: 0.7275
+Epoch 14/15
+92/92 [==============================] - 36s 391ms/step - loss: 0.5315 - accuracy: 0.7885 - val_loss: 0.6866 - val_accuracy: 0.7425
+Epoch 15/15
+92/92 [==============================] - 36s 391ms/step - loss: 0.5151 - accuracy: 0.8106 - val_loss: 0.6954 - val_accuracy: 0.7302</code></pre>
+<h1 id="可视化结果"><a href="#可视化结果" class="headerlink" title="可视化结果"></a>可视化结果</h1><p>应用数据扩充和数据丢失后，与以前相比，过度拟合的情况减少了，并且训练和验证的准确性更加紧密。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">acc = history.history[<span class="string">&#x27;accuracy&#x27;</span>]</span><br><span class="line">val_acc = history.history[<span class="string">&#x27;val_accuracy&#x27;</span>]</span><br><span class="line"></span><br><span class="line">loss = history.history[<span class="string">&#x27;loss&#x27;</span>]</span><br><span class="line">val_loss = history.history[<span class="string">&#x27;val_loss&#x27;</span>]</span><br><span class="line"></span><br><span class="line">epochs_range = <span class="built_in">range</span>(epochs)</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">plt.plot(epochs_range, acc, label=<span class="string">&#x27;Training Accuracy&#x27;</span>)</span><br><span class="line">plt.plot(epochs_range, val_acc, label=<span class="string">&#x27;Validation Accuracy&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Training and Validation Accuracy&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">plt.plot(epochs_range, loss, label=<span class="string">&#x27;Training Loss&#x27;</span>)</span><br><span class="line">plt.plot(epochs_range, val_loss, label=<span class="string">&#x27;Validation Loss&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;upper right&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Training and Validation Loss&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://gitee.com/cui_xinfeng/images/raw/master/Tesorflow%E6%95%99%E7%A8%8B%E4%B9%8B%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/output_53_0.png" alt="png"></p>
+<h1 id="在新数据上进行预测"><a href="#在新数据上进行预测" class="headerlink" title="在新数据上进行预测"></a>在新数据上进行预测</h1><p>最后，让我们使用模型对训练或验证集中未包含的图像进行分类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sunflower_url = <span class="string">&quot;https://storage.googleapis.com/download.tensorflow.org/example_images/592px-Red_sunflower.jpg&quot;</span></span><br><span class="line">sunflower_path = tf.keras.utils.get_file(<span class="string">&#x27;Red_sunflower&#x27;</span>, origin=sunflower_url)</span><br><span class="line"></span><br><span class="line">img = keras.preprocessing.image.load_img(</span><br><span class="line">    sunflower_path, target_size=(img_height, img_width)</span><br><span class="line">)</span><br><span class="line">img_array =keras.preprocessing.image.img_to_array(img)</span><br><span class="line">img_array = tf.expand_dims(img_array, <span class="number">0</span>) <span class="comment"># Create a batch</span></span><br><span class="line"></span><br><span class="line">predictions = model.predict(img_array)</span><br><span class="line">score = tf.nn.softmax(predictions[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">print(</span><br><span class="line">    <span class="string">&quot;这张图片是&#123;&#125;的可能性为&#123;:.2f&#125;&quot;</span></span><br><span class="line">    .<span class="built_in">format</span>(class_names[np.argmax(score)], <span class="number">100</span> * np.<span class="built_in">max</span>(score))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Downloading data from https://storage.googleapis.com/download.tensorflow.org/example_images/592px-Red_sunflower.jpg
+122880/117948 [===============================] - 0s 2us/step
+这张图片是sunflowers的可能性为94.65</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">&quot;https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3138589794,3287061818&amp;fm=26&amp;gp=0.jpg&quot;</span></span><br><span class="line">path = tf.keras.utils.get_file(<span class="string">&#x27;玫瑰花&#x27;</span>, origin=url)</span><br><span class="line"></span><br><span class="line">img = keras.preprocessing.image.load_img(</span><br><span class="line">    path, target_size=(img_height, img_width)</span><br><span class="line">)</span><br><span class="line">img_array =keras.preprocessing.image.img_to_array(img)</span><br><span class="line">img_array = tf.expand_dims(img_array, <span class="number">0</span>) <span class="comment"># Create a batch</span></span><br><span class="line"></span><br><span class="line">predictions = model.predict(img_array)</span><br><span class="line">score = tf.nn.softmax(predictions[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">print(</span><br><span class="line">    <span class="string">&quot;这张图片是&#123;&#125;的可能性为&#123;:.2f&#125;&quot;</span></span><br><span class="line">    .<span class="built_in">format</span>(class_names[np.argmax(score)], <span class="number">100</span> * np.<span class="built_in">max</span>(score))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Downloading data from https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3138589794,3287061818&amp;fm=26&amp;gp=0.jpg
+24576/22871 [================================] - 0s 0us/step
+这张图片是roses的可能性为61.31</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Tensorflow/" rel="tag"># Tensorflow</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/27/Matplotlib%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%8A/" rel="prev" title="Matplotlib学习笔记(上)">
+      <i class="fa fa-chevron-left"></i> Matplotlib学习笔记(上)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/17/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="next" title="人工智能">
+      人工智能 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8keras-preprocessing-%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87"><span class="nav-text">用keras.preprocessing 加载图片</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-text">创建数据集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E6%95%B0%E6%8D%AE"><span class="nav-text">可视化数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BB%A5%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD"><span class="nav-text">配置数据集以提高性能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%8C%96%E6%95%B0%E6%8D%AE"><span class="nav-text">标准化数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-text">创建模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%A8%A1%E5%9E%8B"><span class="nav-text">编译模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%91%98%E8%A6%81"><span class="nav-text">模型摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="nav-text">训练模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C"><span class="nav-text">可视化训练结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-text">过拟合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%89%A9%E5%85%85"><span class="nav-text">数据扩充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dropout"><span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%B9%B6%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="nav-text">编译并训练模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BB%93%E6%9E%9C"><span class="nav-text">可视化结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E6%96%B0%E6%95%B0%E6%8D%AE%E4%B8%8A%E8%BF%9B%E8%A1%8C%E9%A2%84%E6%B5%8B"><span class="nav-text">在新数据上进行预测</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ACui"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">ACui</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ACui96" title="Github → https:&#x2F;&#x2F;github.com&#x2F;ACui96" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xinfeng.cui@foxmail.com" title="E-Mail → mailto:xinfeng.cui@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ACui</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">49k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">45 分钟</span>
+</div>
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https:////cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'W24XYFurW184OnoqRB2MljBV-gzGzoHsz',
+      appKey     : '23RxzHRPxLlSTl0WYTuOWb3a',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
