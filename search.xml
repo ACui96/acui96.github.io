@@ -17,9 +17,11 @@
 <h5 id="项目技术"><a href="#项目技术" class="headerlink" title="项目技术"></a>项目技术</h5><ul>
 <li>前后分离、</li>
 <li>Spring cloud</li>
-<li><h2 id="监控、限流、网关、熔断-分布式"><a href="#监控、限流、网关、熔断-分布式" class="headerlink" title="监控、限流、网关、熔断 分布式"></a>监控、限流、网关、熔断 分布式</h2></li>
+<li>监控、限流、网关、熔断 分布式</li>
 </ul>
-<h5 id="项目微服务架构图"><a href="#项目微服务架构图" class="headerlink" title="项目微服务架构图"></a>项目微服务架构图</h5><p>![image-20210325143607057](D:\workspace\blog\myBlog\source_posts\gulimall 笔记.assets\image-20210325143607057.png)</p>
+<span id="more"></span>
+
+<h5 id="项目微服务架构图"><a href="#项目微服务架构图" class="headerlink" title="项目微服务架构图"></a>项目微服务架构图</h5><p><img src="https://gitee.com/cui_xinfeng/images/raw/master/test/20210325143607057.png" alt="image-20210325143607057"></p>
 <p>首先系统分为<strong>内网部署</strong>和<strong>外网部署</strong>，外网就是手机、电脑等客户端，客户端发送的请求（如登录、注册等）由<code>ngnix</code>集群转交给后台：首先转交给<code>Webflux</code>网关(<code>Spring Cloud Gateway</code>) ,网关根据<strong>动态路由</strong>找到相应服务，如果服务众多，还应<strong>负载均衡</strong>(<code>Ribbon</code>)调用相应服务，如果服务出现问题也可以由网关进行<strong>服务熔断、降级、限流</strong>(<code>Sentinal</code>)；<strong>认证功能</strong>(<code>OAuth2.0</code>)用来判断请求是否合法。</p>
 <p>当请求通过网关到达相应服务后进行处理，服务与服务之间用<code>Feign</code>进行相互调用。若有些请求需要登陆之后才能进行处理，用<code>OAuth2.0</code>进行处理，除了一般登录还整合了<strong>社交登录</strong>，由<code>Spring Security</code>进行整个应用的<strong>安全权限控制</strong>。</p>
 <p>服务要存储的数据或缓存方面：使用了<code>Redis</code>(缓存)、<code>MySQL</code>(主从分离)、使用消息队列(<code>RabbitMQ</code>)进行异步解耦完成消息的<strong>最终一致性</strong></p>
@@ -28,7 +30,7 @@
 <p>项目上线后，为了快速定位项目中可能出现的问题 ，用<code>ELK</code>对日志进行处理，也就是用<code>LogStash</code>来收集业务中的各种日志并将其导入到<code>ES</code>中，然后用<code>Klbana</code>可视化界面检索日志信息，以快速定位问题所在。</p>
 <p>分布式方面，用<code>Spring Cloud Alibaba Nacos</code>作为<strong>服务注册中心</strong>、<strong>配置中心</strong>(一处配置，处处调用)。<strong>链路追踪</strong>使用<code>Sleuth+Zipkin</code>,获取服务的链路信息后交给开源的<code>Prometheus</code>进行聚合分析，再由<code>Grafana</code>进行可视化展示，并通过<code>AlertManager</code>使用邮件或短信的方式告知开发者。</p>
 <p>而且，还提供了**持续集成和持续部署(CI/CD)**，由于系统的服务众多，修改代码后每次打包部署很麻烦，有了CI/CD后，开发者修改代码后可以将代码发布到远程仓库(如<code>github</code>)，然后运维人员可以通过运维工具<code>Jenkins Pipeline</code> 从<code>github</code>中获取代码并打包成Docker镜像，最终使用K8S将项目整合到Docker容器中。</p>
-<h5 id="微服务划分图"><a href="#微服务划分图" class="headerlink" title="微服务划分图"></a>微服务划分图</h5><p>![image-20210325152313583](D:\workspace\blog\myBlog\source_posts\gulimall 笔记.assets\image-20210325152313583.png)</p>
+<h5 id="微服务划分图"><a href="#微服务划分图" class="headerlink" title="微服务划分图"></a>微服务划分图</h5><p><img src="https://gitee.com/cui_xinfeng/images/raw/master/test/20210325152313583.png" alt="image-20210325152313583"></p>
 <p>前端：</p>
 <ul>
 <li>admin-vue：面向工作人员的后台管理系统</li>
@@ -290,7 +292,7 @@
 <h4 id="配置跨域访问"><a href="#配置跨域访问" class="headerlink" title="配置跨域访问"></a>配置跨域访问</h4><p>gateway模块新建配置类</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.atguigu.gateway.config;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.cors.CorsConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.cors.reactive.CorsWebFilter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GulimallCorsConfiguration</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CorsWebFilter <span class="title">corsWebFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        UrlBasedCorsConfigurationSource source = <span class="keyword">new</span> UrlBasedCorsConfigurationSource();</span><br><span class="line"></span><br><span class="line">        CorsConfiguration corsConfiguration = <span class="keyword">new</span> CorsConfiguration();</span><br><span class="line">        <span class="comment">//配置跨域</span></span><br><span class="line">        corsConfiguration.addAllowedHeader(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">        corsConfiguration.addAllowedMethod(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">        corsConfiguration.addAllowedOrigin(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">        corsConfiguration.setAllowCredentials(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        source.registerCorsConfiguration(<span class="string">&quot;/**&quot;</span>, corsConfiguration);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CorsWebFilter(source);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h4><p>![image-20210406175021973](D:\workspace\blog\myBlog\source_posts\gulimall 笔记.assets\image-20210406175021973.png)</p>
+<h4 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h4><p><img src="https://gitee.com/cui_xinfeng/images/raw/master/test/20210406175021973.png" alt="image-20210406175021973"></p>
 <h5 id="SpringCloud-Alibaba-OSS"><a href="#SpringCloud-Alibaba-OSS" class="headerlink" title="SpringCloud Alibaba-OSS"></a>SpringCloud Alibaba-OSS</h5><p>对象存储服务</p>
 <p><a href="https://github.com/alibaba/aliyun-spring-boot/blob/master/aliyun-spring-boot-samples/aliyun-oss-spring-boot-sample/README-zh.md#aliyun-spring-boot-oss-%E7%A4%BA%E4%BE%8B">Aliyun Spring Boot OSS 示例</a></p>
 <ol>
