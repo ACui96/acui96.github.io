@@ -365,4 +365,12 @@
         <tag>项目</tag>
       </tags>
   </entry>
+  <entry>
+    <title>My New Post</title>
+    <url>/2021/04/22/test/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>test</tag>
+      </tags>
+  </entry>
 </search>
