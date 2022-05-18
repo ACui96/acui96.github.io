@@ -10,9 +10,17 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
+    <title>test</title>
+    <url>/2021/04/22/test/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>分布式微服务商城笔记</title>
     <url>/2021/04/22/gulimall%20%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="gulimall-笔记"><a href="#gulimall-笔记" class="headerlink" title="gulimall 笔记"></a>gulimall 笔记</h1><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>谷粒商城 尚硅谷课程 自己听课的笔记和代码</p>
+    <content><![CDATA[<h1 id="分布式微服务商城笔记"><a href="#分布式微服务商城笔记" class="headerlink" title="分布式微服务商城笔记"></a>分布式微服务商城笔记</h1><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>谷粒商城 尚硅谷课程 自己听课的笔记和代码</p>
 <h5 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h5><p>B2C模式(Business to Consumer)</p>
 <h5 id="项目技术"><a href="#项目技术" class="headerlink" title="项目技术"></a>项目技术</h5><ul>
 <li>前后分离、</li>
@@ -21,7 +29,7 @@
 </ul>
 <span id="more"></span>
 
-<h5 id="项目微服务架构图"><a href="#项目微服务架构图" class="headerlink" title="项目微服务架构图"></a>项目微服务架构图</h5><p><img src="https://gitee.com/cui_xinfeng/images/raw/master/test/20210325143607057.png" alt="image-20210325143607057"></p>
+<h5 id="项目微服务架构图"><a href="#项目微服务架构图" class="headerlink" title="项目微服务架构图"></a>项目微服务架构图</h5><p><img src="https://gitee.com/cui_xinfeng/images/blob/master/test/20210422164252.png" alt="image-20210325143607057"></p>
 <p>首先系统分为<strong>内网部署</strong>和<strong>外网部署</strong>，外网就是手机、电脑等客户端，客户端发送的请求（如登录、注册等）由<code>ngnix</code>集群转交给后台：首先转交给<code>Webflux</code>网关(<code>Spring Cloud Gateway</code>) ,网关根据<strong>动态路由</strong>找到相应服务，如果服务众多，还应<strong>负载均衡</strong>(<code>Ribbon</code>)调用相应服务，如果服务出现问题也可以由网关进行<strong>服务熔断、降级、限流</strong>(<code>Sentinal</code>)；<strong>认证功能</strong>(<code>OAuth2.0</code>)用来判断请求是否合法。</p>
 <p>当请求通过网关到达相应服务后进行处理，服务与服务之间用<code>Feign</code>进行相互调用。若有些请求需要登陆之后才能进行处理，用<code>OAuth2.0</code>进行处理，除了一般登录还整合了<strong>社交登录</strong>，由<code>Spring Security</code>进行整个应用的<strong>安全权限控制</strong>。</p>
 <p>服务要存储的数据或缓存方面：使用了<code>Redis</code>(缓存)、<code>MySQL</code>(主从分离)、使用消息队列(<code>RabbitMQ</code>)进行异步解耦完成消息的<strong>最终一致性</strong></p>
@@ -362,15 +370,9 @@
 ]]></content>
       <tags>
         <tag>java</tag>
-        <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>My New Post</title>
-    <url>/2021/04/22/test/</url>
-    <content><![CDATA[]]></content>
-      <tags>
-        <tag>test</tag>
+        <tag>note</tag>
+        <tag>spring cloud</tag>
+        <tag>微服务</tag>
       </tags>
   </entry>
 </search>
