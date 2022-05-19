@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>My New Post</title>
-    <url>/2021/04/22/My-New-Post/</url>
-    <content><![CDATA[<p>士大夫烦烦烦   </p>
-]]></content>
+    <title>cRPC-从零搭建一个rpc框架</title>
+    <url>/2022/05/18/%E4%BB%8E%E9%9B%B6%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AArpc%E6%A1%86%E6%9E%B6/</url>
+    <content><![CDATA[<h1 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h1><h2 id="概念及原理"><a href="#概念及原理" class="headerlink" title="概念及原理"></a>概念及原理</h2><h1 id="序列化-反序列化"><a href="#序列化-反序列化" class="headerlink" title="序列化/反序列化"></a>序列化/反序列化</h1><h1 id="网络通信编程"><a href="#网络通信编程" class="headerlink" title="网络通信编程"></a>网络通信编程</h1><h1 id="代理实现"><a href="#代理实现" class="headerlink" title="代理实现"></a>代理实现</h1><h1 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h1>]]></content>
       <tags>
-        <tag>test</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2021/04/22/test/</url>
-    <content><![CDATA[]]></content>
-      <tags>
-        <tag>test</tag>
+        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
     <title>分布式微服务商城笔记</title>
     <url>/2021/04/22/gulimall%20%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="分布式微服务商城笔记"><a href="#分布式微服务商城笔记" class="headerlink" title="分布式微服务商城笔记"></a>分布式微服务商城笔记</h1><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>谷粒商城 尚硅谷课程 自己听课的笔记和代码</p>
+    <content><![CDATA[<h1 id="分布式微服务商城笔记"><a href="#分布式微服务商城笔记" class="headerlink" title="分布式微服务商城笔记"></a>分布式微服务商城笔记</h1><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>自己听课的笔记和代码</p>
 <h5 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h5><p>B2C模式(Business to Consumer)</p>
 <h5 id="项目技术"><a href="#项目技术" class="headerlink" title="项目技术"></a>项目技术</h5><ul>
 <li>前后分离、</li>
