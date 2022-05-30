@@ -188,6 +188,73 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/28/redis-learning-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avtar.jpg">
+      <meta itemprop="name" content="acui">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Acui's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/28/redis-learning-note/" class="post-title-link" itemprop="url">redis-learning-note</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-28 16:07:41 / 修改时间：16:08:13" itemprop="dateCreated datePublished" datetime="2022-05-28T16:07:41+08:00">2022-05-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Redis-笔记"><a href="#Redis-笔记" class="headerlink" title="Redis 笔记"></a>Redis 笔记</h1><p><a href="redis.io">Redis 官网</a></p>
+<p><a target="_blank" rel="noopener" href="http://redis.cn/commands.html">redis 命令</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/28/redis-learning-note/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/22/spring%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -359,7 +426,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-25 15:43:55" itemprop="dateModified" datetime="2022-05-25T15:43:55+08:00">2022-05-25</time>
+                <time title="修改时间：2022-05-30 10:40:59" itemprop="dateModified" datetime="2022-05-30T10:40:59+08:00">2022-05-30</time>
               </span>
 
           
@@ -374,20 +441,6 @@
 
       
           <h1 id="算法笔记"><a href="#算法笔记" class="headerlink" title="算法笔记"></a>算法笔记</h1><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p>二分查找也称为折半查找，每次都能将查找区间减半，这种折半特性的算法时间复杂度为 O(logN)。</p>
-<h3 id="正常版本"><a href="#正常版本" class="headerlink" title="正常版本"></a>正常版本</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input:[1,2,3,4,5] key = 3</span><br><span class="line">return the index : 2</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> nums[], <span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> l = <span class="number">0</span>, h = nums.length;</span><br><span class="line">    <span class="keyword">while</span> (l &lt; h) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = l + (h - l) / <span class="number">2</span>; <span class="comment">// (l + h) / 2 可能出现加法溢出</span></span><br><span class="line">		<span class="keyword">if</span> (nums[mid] == key) &#123;</span><br><span class="line">            <span class="keyword">return</span> m;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; key) &#123;</span><br><span class="line">            l = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            h = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;  <span class="comment">// 错误码，表示没找到</span></span><br><span class="line">    <span class="comment">// return l; //  将key 插入 nums 的正确位置</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="变种"><a href="#变种" class="headerlink" title="变种"></a>变种</h3><p>二分查找可以有很多变种，实现变种要注意<strong>边界值</strong>的判断。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找 key 在有重复元素的数组中的最左位置</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> nums[], <span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>, h = nums.length;</span><br><span class="line">    <span class="keyword">while</span> (l &lt; h) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = l + (h - l) / <span class="number">2</span>; </span><br><span class="line">		<span class="keyword">if</span> (nums[mid] &gt;= key) &#123;</span><br><span class="line">            h = mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  <span class="comment">// nums[mid] &lt; key</span></span><br><span class="line">            l = mid + <span class="number">1</span>；</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>在 h 的赋值表达式为 h = m 的情况下</strong>，如果循环条件为 l &lt;= h，那么会出现循环无法退出的情况，因此<strong>循环条件只能是 l &lt; h</strong>。下面展示了死循环</p>
-<figure class="highlight v"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nums = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;, key = <span class="number">1</span></span><br><span class="line">l   m   h</span><br><span class="line"><span class="number">0</span>   <span class="number">1</span>   <span class="number">2</span>  nums[m] &gt;= key</span><br><span class="line"><span class="number">0</span>   <span class="number">0</span>   <span class="number">1</span>  nums[m] &lt; key</span><br><span class="line"><span class="number">1</span>   <span class="number">1</span>   <span class="number">1</span>  nums[m] &gt;= key</span><br><span class="line"><span class="number">1</span>   <span class="number">1</span>   <span class="number">1</span>  nums[m] &gt;= key</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="图"><a href="#图" class="headerlink" title="图"></a>图</h2><h3 id="邻接表构建模板"><a href="#邻接表构建模板" class="headerlink" title="邻接表构建模板"></a>邻接表构建模板</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/course-schedule/">207.课程表</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//邻接表 为一个二维数组，每个数组代表一个节点，里面存放与该节点相邻的节点</span></span><br><span class="line">List&lt;List&lt;Integer&gt;&gt; ajacency = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="comment">//初始化</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numCourses; i++) </span><br><span class="line">    ajacency.add(<span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"><span class="comment">//赋值</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span>[] cp : prerequisites) </span><br><span class="line">    ajacency.get(cp[<span class="number">1</span>]).add(cp[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/05/20/%E7%AE%97%E6%B3%95%E9%A2%98%E7%AC%94%E8%AE%B0/#more" rel="contents">
@@ -581,7 +634,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-19 11:05:29" itemprop="dateModified" datetime="2022-05-19T11:05:29+08:00">2022-05-19</time>
+                <time title="修改时间：2022-05-27 10:37:05" itemprop="dateModified" datetime="2022-05-27T10:37:05+08:00">2022-05-27</time>
               </span>
 
           
@@ -686,12 +739,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>

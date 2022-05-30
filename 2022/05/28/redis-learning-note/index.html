@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Redis 笔记Redis 官网 redis 命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis-learning-note">
+<meta property="og:url" content="http://example.com/2022/05/28/redis-learning-note/index.html">
+<meta property="og:site_name" content="Acui&#39;s Notes">
+<meta property="og:description" content="Redis 笔记Redis 官网 redis 命令">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:/workspace/vscode/leetcode/src/main/java/redisLearning/README.assets/image-20220524154131135.png">
+<meta property="article:published_time" content="2022-05-28T08:07:41.000Z">
+<meta property="article:modified_time" content="2022-05-28T08:08:13.466Z">
+<meta property="article:author" content="acui">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/workspace/vscode/leetcode/src/main/java/redisLearning/README.assets/image-20220524154131135.png">
+
+<link rel="canonical" href="http://example.com/2022/05/28/redis-learning-note/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>redis-learning-note | Acui's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Acui's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/28/redis-learning-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avtar.jpg">
+      <meta itemprop="name" content="acui">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Acui's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          redis-learning-note
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-28 16:07:41 / 修改时间：16:08:13" itemprop="dateCreated datePublished" datetime="2022-05-28T16:07:41+08:00">2022-05-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Redis-笔记"><a href="#Redis-笔记" class="headerlink" title="Redis 笔记"></a>Redis 笔记</h1><p><a href="redis.io">Redis 官网</a></p>
+<p><a target="_blank" rel="noopener" href="http://redis.cn/commands.html">redis 命令</a></p>
+<span id="more"></span>
+<p>linux虚拟机 密码： 11071999iuc</p>
+<p>Docker 安装Redis</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">启动 docker</span></span><br><span class="line">systemctl start docker</span><br><span class="line"><span class="meta">#</span><span class="bash"> 开启自启动</span></span><br><span class="line">systemctl enable docker</span><br><span class="line"></span><br><span class="line">docker pull redis：6.0.8</span><br><span class="line">docker images</span><br><span class="line">docker run -p 6379:6379 --name myredis -v /usr/local/docker/redis.conf:/etc/redis/redis.conf -v /usr/local/docker/data:/data -d redis redis-server /etc/redis/redis.conf --appendonly yes</span><br><span class="line">docker ps</span><br><span class="line"><span class="meta">#</span><span class="bash">进入 redis 容器 fb547a3478d5</span></span><br><span class="line">docker exec -it 容器id/服务名 redis-cli</span><br><span class="line"><span class="meta">#</span><span class="bash">docker <span class="built_in">exec</span> -it fb547a3478d5 redis-cli</span></span><br><span class="line">auth 123456</span><br></pre></td></tr></table></figure>
+
+<h2 id="redis-传统五大数据结构及应用"><a href="#redis-传统五大数据结构及应用" class="headerlink" title="redis 传统五大数据结构及应用"></a>redis 传统五大数据结构及应用</h2><h3 id="String（字符）"><a href="#String（字符）" class="headerlink" title="String（字符）"></a>String（字符）</h3><h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>set key value</li>
+<li>get key</li>
+<li>同时设置、获取多个  mset k1 v1 k2 v2 …   mget k1 k2 …</li>
+<li>数字增减  <ul>
+<li>递增  incr key</li>
+<li>增加指定数值 incrby key increment</li>
+<li>递减 decr key</li>
+<li>减少指定数值 decrby key decrement</li>
+</ul>
+</li>
+<li>获取字符串长度 STRLEN key</li>
+<li><strong>分布式锁</strong><ul>
+<li>setnx key value  <ul>
+<li>setnx (set if not exist)  key 不存在才创建 key</li>
+</ul>
+</li>
+<li>set key value [EX seconds] [PX millsenconds] [NX] [XX]<ul>
+<li>EX: key 在多少秒之后过期</li>
+<li>PX：key 在多少毫秒之后过期</li>
+<li>NX：当 key 不存在时，才创建 key，效果等同于 setnx </li>
+<li>XX：当 key 存在时，覆盖 key</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><ol>
+<li>商品编号、订单编号采用 INCR 命令生成</li>
+<li>点赞</li>
+</ol>
+<h3 id="Hash（散列，map）"><a href="#Hash（散列，map）" class="headerlink" title="Hash（散列，map）"></a>Hash（散列，map）</h3><p>redis 中的 hash 对应 Java 中的 <strong>Map&lt;String, Map&lt;Object, Object&gt;&gt;</strong></p>
+<h4 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>一次设置一个字段值 hset key field value   比如  hset person name cuixinfeng</li>
+<li>一次获取一个字段值 hget key field          比如 hget person name</li>
+<li>一次设置多个字段值 hmset key field value [field value …]</li>
+<li>一次获取多个字段值  hmget key field [field …]</li>
+<li>获取所有字段值 hgetall key  </li>
+<li>获取某个key内的全部数量</li>
+<li>删除一个key hdel</li>
+</ul>
+<h4 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h4><p>购物车  早期，当前中小厂可用</p>
+<ul>
+<li>新增 hset shopcar：uid1024 224477 1</li>
+<li>增加 hincrby shopcar:uid1024 224477 1</li>
+<li>总数 hlen shopcar:uid1024 </li>
+<li>全选 hgetall shopcar:uid1024 </li>
+</ul>
+<h3 id="List（列表）"><a href="#List（列表）" class="headerlink" title="List（列表）"></a>List（列表）</h3><h4 id="常用命令-2"><a href="#常用命令-2" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>LPUSH key value</li>
+<li>RPUSH key value</li>
+<li>LRANGE key start stop</li>
+<li>LLEN key</li>
+</ul>
+<h4 id="应用场景-2"><a href="#应用场景-2" class="headerlink" title="应用场景"></a>应用场景</h4><p>微信文章订阅公众号</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpush subarticle:uid1010 11 22</span><br><span class="line">(integer) 2</span><br><span class="line">127.0.0.1:6379&gt; lrange subarticle:uid1010 0 -1</span><br><span class="line">1) &quot;22&quot;</span><br><span class="line">2) &quot;11&quot;</span><br></pre></td></tr></table></figure>
+
+<p> subarticle:uid1010 表示uid为1010的用户的订阅文章</p>
+<p>11 22 分别代表两篇不同文章</p>
+<p>lrange subarticle:uid1010 0 -1 表示展示用户订阅的所有文章</p>
+<h3 id="Set（集合）"><a href="#Set（集合）" class="headerlink" title="Set（集合）"></a>Set（集合）</h3><h4 id="常用命令-3"><a href="#常用命令-3" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>SADD</li>
+<li>SREM</li>
+<li>SMEMBERS</li>
+<li>SISMEMBER</li>
+<li>SCARD</li>
+<li>SRANDMEMBER</li>
+<li>SPOP</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sadd set1 1 1 1 2 3 4 5 5</span><br><span class="line">(integer) 5</span><br><span class="line">127.0.0.1:6379&gt; SMEMBERS set1</span><br><span class="line">1) &quot;1&quot;</span><br><span class="line">2) &quot;2&quot;</span><br><span class="line">3) &quot;3&quot;</span><br><span class="line">4) &quot;4&quot;</span><br><span class="line">5) &quot;5&quot;</span><br><span class="line">127.0.0.1:6379&gt; SREM set1 1</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; SMEMBERS set1</span><br><span class="line">1) &quot;2&quot;</span><br><span class="line">2) &quot;3&quot;</span><br><span class="line">3) &quot;4&quot;</span><br><span class="line">4) &quot;5&quot;</span><br><span class="line">127.0.0.1:6379&gt; SISMEMBER set1 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; SISMEMBER set1 2</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; SCARD set1</span><br><span class="line">(integer) 4</span><br><span class="line">127.0.0.1:6379&gt; SPOP set1</span><br><span class="line">&quot;2&quot;</span><br><span class="line">127.0.0.1:6379&gt; SPOP set1 2</span><br><span class="line">1) &quot;4&quot;</span><br><span class="line">2) &quot;5&quot;</span><br></pre></td></tr></table></figure>
+
+<p>集合运算 交并补</p>
+<ul>
+<li>sdiff  A-B</li>
+<li>sunion A∪B</li>
+<li>sinter A∩B</li>
+</ul>
+<h4 id="应用场景-3"><a href="#应用场景-3" class="headerlink" title="应用场景"></a>应用场景</h4><ol>
+<li><p>微信抽奖小程序</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; SADD key 1 2 3 4 5 6 7 8 9 10 # 共10 个人抽奖</span><br><span class="line">(integer) 10</span><br><span class="line">127.0.0.1:6379&gt; scard key # 查看参加人数</span><br><span class="line">(integer) 10</span><br><span class="line">127.0.0.1:6379&gt; SRANDMEMBER key 2 # 随机抽 2 个人，元素不删除</span><br><span class="line">1) &quot;4&quot;</span><br><span class="line">2) &quot;1&quot;</span><br><span class="line">127.0.0.1:6379&gt; spop key 3 # 随机抽 3 个人，元素删除</span><br><span class="line">1) &quot;6&quot;</span><br><span class="line">2) &quot;1&quot;</span><br><span class="line">3) &quot;4&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>微信朋友圈点赞</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; SADD pub:msgId z3 l4 w5 # 新增对某个消息点赞的人</span><br><span class="line">(integer) 3</span><br><span class="line">127.0.0.1:6379&gt; SREM pub:msgId z3 # 取消点赞</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; SMEMBERS pub:msgId # 查看所有点赞的人</span><br><span class="line">1) &quot;w5&quot;</span><br><span class="line">2) &quot;l4&quot;</span><br><span class="line">127.0.0.1:6379&gt; scard pub:msgId # 统计所有点赞人数</span><br><span class="line">(integer) 2</span><br><span class="line">127.0.0.1:6379&gt; SISMEMBER pub:msgId w5 # 判断某个用户是否对某个消息点赞</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure></li>
+<li><p>微博好友关注社交关系  <strong>共同关注</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sadd acui 1 2 3 4 5 # acui关注的人</span><br><span class="line">(integer) 5</span><br><span class="line">127.0.0.1:6379&gt; SADD zhoujielun 2 3 4 7 8 # 周杰伦关注的人</span><br><span class="line">(integer) 5</span><br><span class="line">127.0.0.1:6379&gt; SINTER acui zhoujielun # 取交集，共同关注的人</span><br><span class="line">1) &quot;2&quot;</span><br><span class="line">2) &quot;3&quot;</span><br><span class="line">3) &quot;4&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>QQ内推可能认识的人</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; SADD s1 1 2 3 4 5 # s1 的好友</span><br><span class="line">(integer) 5</span><br><span class="line">127.0.0.1:6379&gt; SADD s2 2 3 4 5 6 # s2 的好友</span><br><span class="line">(integer) 5</span><br><span class="line">127.0.0.1:6379&gt; SDIFF s1 s2 # s2 可能认识的人</span><br><span class="line">1) &quot;1&quot;</span><br><span class="line">127.0.0.1:6379&gt; SDIFF s2 s1 # s1 可能认识的人</span><br><span class="line">1) &quot;6&quot;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="SortedSet（有序集合，简称-zSet）"><a href="#SortedSet（有序集合，简称-zSet）" class="headerlink" title="SortedSet（有序集合，简称 zSet）"></a>SortedSet（有序集合，简称 zSet）</h3><p>为 set 中添加带有 score 的元素，可以按照 score 排序</p>
+<h4 id="常用命令-4"><a href="#常用命令-4" class="headerlink" title="常用命令"></a>常用命令</h4><h4 id="应用场景-4"><a href="#应用场景-4" class="headerlink" title="应用场景"></a>应用场景</h4><p>排行榜</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ZADD goods:sellsort 9 1001 15 1002 # 商品编号1001的销量是9，商品编号1002的销量是15</span><br><span class="line">(integer) 2</span><br><span class="line">127.0.0.1:6379&gt; ZINCRBY goods:sellsort 2 1001 # 有一个客户买了 2 件 1001，1001销量加 2</span><br><span class="line">&quot;11&quot;</span><br><span class="line">127.0.0.1:6379&gt; ZRANGE goods:sellsort 0 10 withscores # 求商品销量前 10 名</span><br><span class="line">1) &quot;1001&quot;</span><br><span class="line">2) &quot;11&quot;</span><br><span class="line">3) &quot;1002&quot;</span><br><span class="line">4) &quot;15&quot;</span><br><span class="line">127.0.0.1:6379&gt; ZREVRANGE goods:sellsort 0 10 withscores # 大的在前</span><br><span class="line">1) &quot;1002&quot;</span><br><span class="line">2) &quot;15&quot;</span><br><span class="line">3) &quot;1001&quot;</span><br><span class="line">4) &quot;11&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="其它类型"><a href="#其它类型" class="headerlink" title="其它类型"></a>其它类型</h3><p>Bitmap（位图）</p>
+<p>HyperLogLog（统计）</p>
+<p>GEO（地理）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在redis 客户端，可以使用 <span class="built_in">help</span> @[类型] 来查看文档</span></span><br><span class="line">127.0.0.1:6379&gt; help @string</span><br><span class="line"></span><br><span class="line">APPEND key value</span><br><span class="line">summary: Append a value to a key</span><br><span class="line">since: 2.0.0</span><br><span class="line"></span><br><span class="line">BITCOUNT key [start end]</span><br><span class="line">summary: Count set bits in a string</span><br><span class="line">since: 2.6.0</span><br><span class="line"></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>分布式锁是指在分布式微服务架构下，拆分后的各个微服务之间为了避免冲突和数据故障而加入的一种锁</p>
+<h4 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h4><h5 id="业务代码"><a href="#业务代码" class="headerlink" title="业务代码"></a>业务代码</h5><p>建两个module </p>
+<p>boot-redis01 boot-redis02  除了端口号都一样</p>
+<p>业务类 实现减库存业务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GoodController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;server.port&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String serverPort;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/buy_goods&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">buy_goods</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String result = stringRedisTemplate.opsForValue().get(<span class="string">&quot;goods:001&quot;</span>);<span class="comment">// ==get(key) 看库存够不够</span></span><br><span class="line">        <span class="keyword">int</span> goodNumber = result == <span class="keyword">null</span> ? <span class="number">0</span> : Integer.parseInt(result);</span><br><span class="line">        <span class="keyword">if</span> (goodNumber &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> realNumber = goodNumber - <span class="number">1</span>; <span class="comment">// 库存够，卖一个</span></span><br><span class="line">            stringRedisTemplate.opsForValue().set(<span class="string">&quot;goods:001&quot;</span>, String.valueOf(realNumber));</span><br><span class="line">            log.info(<span class="string">&quot;成功买到商品， 库存还剩下【&#123;&#125;】件，\t 服务端口为【&#123;&#125;】&quot;</span>, realNumber, serverPort);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;成功买到商品\t, 服务端口为&quot;</span> + serverPort;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.info(<span class="string">&quot;商品售罄、活动结束、欢迎下次光临，\t服务端口为【&#123;&#125;】&quot;</span>, serverPort);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;商品售罄、活动结束、欢迎下次光临&quot;</span> + <span class="string">&quot;\t服务端口为:&quot;</span>+serverPort;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="改进点"><a href="#改进点" class="headerlink" title="改进点"></a>改进点</h5><h6 id="v1-0-没有加锁，并发下数字不对，会出现超卖现象"><a href="#v1-0-没有加锁，并发下数字不对，会出现超卖现象" class="headerlink" title="v1.0 没有加锁，并发下数字不对，会出现超卖现象"></a>v1.0 没有加锁，并发下数字不对，会出现超卖现象</h6><ul>
+<li><p>synchronized        “”不见不散””</p>
+</li>
+<li><p>ReentrantLock     与synchronized 不同，ReentrantLock    不会一直阻塞</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">        <span class="comment">// ReentrantLock 用法1</span></span><br><span class="line"><span class="comment">//        lock.lock();</span></span><br><span class="line"><span class="comment">//        try&#123;</span></span><br><span class="line"><span class="comment">//            //... method body</span></span><br><span class="line"><span class="comment">//        &#125; catch (Exception e) &#123;</span></span><br><span class="line"><span class="comment">//            e.printStackTrace();</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line"><span class="comment">//        lock.unlock();</span></span><br><span class="line">        </span><br><span class="line"><span class="comment">//        //ReentrantLock 用法2</span></span><br><span class="line"><span class="comment">//        if (lock.tryLock()) &#123; // 尝试获取锁</span></span><br><span class="line"><span class="comment">//            try &#123;</span></span><br><span class="line"><span class="comment">//                // manipulate protected state</span></span><br><span class="line"><span class="comment">//            &#125; finally &#123;</span></span><br><span class="line"><span class="comment">//                lock.unlock();</span></span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line"><span class="comment">//        &#125; else &#123;</span></span><br><span class="line"><span class="comment">//            // perform alternative actions</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line"><span class="comment">//        //ReentrantLock 用法3</span></span><br><span class="line"><span class="comment">//        if (lock.tryLock(2000, TimeUnit.MILLISECONDS)) &#123; // 超时等待,给一个规定时间，拿不到锁就放弃</span></span><br><span class="line"><span class="comment">//            try &#123;</span></span><br><span class="line"><span class="comment">//                // manipulate protected state</span></span><br><span class="line"><span class="comment">//            &#125; finally &#123;</span></span><br><span class="line"><span class="comment">//                lock.unlock();</span></span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line"><span class="comment">//        &#125; else &#123;</span></span><br><span class="line"><span class="comment">//            // perform alternative actions</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h6 id="加入-ngnix-代理"><a href="#加入-ngnix-代理" class="headerlink" title="加入 ngnix 代理"></a>加入 ngnix 代理</h6><p>docker 安装 ngnix</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker pull ngnix</span><br><span class="line"></span><br><span class="line">docker run </span><br><span class="line"></span><br><span class="line">mkdir -p /root/nginx/www /root/nginx/logs /root/nginx/conf</span><br><span class="line"></span><br><span class="line">docker images</span><br><span class="line"></span><br><span class="line">docker cp 876b34885be5:/etc/nginx/nginx.conf /root/nginx/conf</span><br><span class="line"></span><br><span class="line">docker run -d -p 80:80 --name nginx-web -v /root/nginx/www:/usr/share/nginx/html -v /root/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /root/nginx/logs:/var/log/nginx nginx</span><br></pre></td></tr></table></figure>
+
+<p>配置文件</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#nginx.conf</span></span><br><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/error.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 配置负载均衡  weight 为权重</span></span><br><span class="line">    <span class="attribute">upstream</span> mynginx&#123;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.47.32:1111</span> weight=<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.47.32:2222</span> weight=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">    server&#123;</span><br><span class="line">        <span class="attribute">listen</span>          <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span>      <span class="number">192.168.136.130</span>;</span><br><span class="line">		</span><br><span class="line">        <span class="comment"># 反向代理</span></span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://mynginx;</span><br><span class="line">            <span class="attribute">index</span> index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Jmeter 压力测试</p>
+<ul>
+<li>添加 线程组（100个线程  1s 循环 1 次）</li>
+<li>添加 HTTP 请求 <a target="_blank" rel="noopener" href="http://192.168.136.130/buy_goods">http://192.168.136.130/buy_goods</a></li>
+</ul>
+<p>结果出现超卖现象，同一个商品被卖多次</p>
+<h6 id="v2-0-分布式下超卖问题"><a href="#v2-0-分布式下超卖问题" class="headerlink" title="v2.0 分布式下超卖问题"></a>v2.0 分布式下超卖问题</h6><p>解决  利用 redis 的 setnx （set if not exist）,并保证锁的释放</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GoodController</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String REDIS_LOCK = <span class="string">&quot;MinusStockLock&quot;</span>; <span class="comment">// 向redis中添加一个 key 为 “MinusStockLock” 的元素模拟锁</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/buy_goods&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">buy_goods</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        String uniqValue = UUID.randomUUID().toString() + Thread.currentThread().getName();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK, uniqValue);<span class="comment">//相当于 set Nx</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!flag) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;抢锁失败&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//... 正常减库存</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            stringRedisTemplate.delete(REDIS_LOCK); <span class="comment">// 解锁 出现异常可能无法释放锁，必须在代码层面保证锁的释放，也就是放到finally中</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="v3-0-服务器宕机，代码没有走到-finally，没办法保证解锁，需要加入一个过期时间限定-key"><a href="#v3-0-服务器宕机，代码没有走到-finally，没办法保证解锁，需要加入一个过期时间限定-key" class="headerlink" title="v3.0 服务器宕机，代码没有走到 finally，没办法保证解锁，需要加入一个过期时间限定 key"></a>v3.0 服务器宕机，代码没有走到 finally，没办法保证解锁，需要加入一个过期时间限定 key</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK, uniqValue); <span class="comment">// 相当于 set Nx</span></span><br><span class="line">stringRedisTemplate.expire(REDIS_LOCK, <span class="number">10L</span>, TimeUnit.SECONDS); <span class="comment">// 加入一个过期时间限定 key</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h6 id="v4-0-加锁与设置过期时间不是一个原子操作"><a href="#v4-0-加锁与设置过期时间不是一个原子操作" class="headerlink" title="v4.0 加锁与设置过期时间不是一个原子操作"></a>v4.0 加锁与设置过期时间不是一个原子操作</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK, uniqValue, <span class="number">10L</span>, TimeUnit.SECONDS);<span class="comment">//相当于 setnx  保证加锁与设置过期时间的原子性</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="v5-0-张冠李戴，误删了别人的锁-redis-分布式锁在删除的时候的注意事项"><a href="#v5-0-张冠李戴，误删了别人的锁-redis-分布式锁在删除的时候的注意事项" class="headerlink" title="v5.0 张冠李戴，误删了别人的锁  (redis 分布式锁在删除的时候的注意事项)"></a>v5.0 张冠李戴，误删了别人的锁  (redis 分布式锁在删除的时候的注意事项)</h6><p>如 A 线程执行过程中，MinusStockLock 锁过期了，B 线程进来，A 最终会删掉 B 的锁</p>
+<p><img src="D:\workspace\vscode\leetcode\src\main\java\redisLearning\README.assets\image-20220524154131135.png" alt="image-20220524154131135"></p>
+<p>判断 value 是否是自己的，决定是否删除</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (stringRedisTemplate.opsForValue().get(REDIS_LOCK).equals(uniqValue)) &#123;</span><br><span class="line">        stringRedisTemplate.delete(REDIS_LOCK); <span class="comment">// 解锁 出现异常可能无法释放锁，必须在代码层面保证锁的释放，也就是放到finally中</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="v6-0-判断和删除不是原子性的"><a href="#v6-0-判断和删除不是原子性的" class="headerlink" title="v6.0 判断和删除不是原子性的"></a>v6.0 判断和删除不是原子性的</h6><p>解决 </p>
+<ul>
+<li>lua 脚本</li>
+<li>redis 事务</li>
+</ul>
+<p>redis 事务</p>
+<ul>
+<li><p><code>MULTI </code> <code>EXEC</code> </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; MULTI#标志事务的开始</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; set k1 v11</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; set k2 v22</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; EXEC # 相当于 MySQL 的提交</span><br><span class="line">1) OK</span><br><span class="line">2) OK</span><br></pre></td></tr></table></figure></li>
+<li><p><code>WATCH</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 中间有人加塞也不会影响客户端 A 事务的执行，会覆盖其它人</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 客户端 A</span></span><br><span class="line">127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; set k1 v111</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; set k2 v222</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 客户端 B</span></span><br><span class="line">127.0.0.1:6379&gt; set k1 abc</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get k1</span><br><span class="line">&quot;abc&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 客户端 A</span></span><br><span class="line">127.0.0.1:6379&gt; EXEC</span><br><span class="line">1) OK</span><br><span class="line">2) OK</span><br><span class="line">127.0.0.1:6379&gt; GET k1</span><br><span class="line">&quot;v111&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> WATCH 用法</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 正常流程</span></span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; WATCH k1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; set k1 AAA</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; set k2 AAA</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; EXEC</span><br><span class="line">1) OK</span><br><span class="line">2) OK</span><br><span class="line">127.0.0.1:6379&gt; UNWATCH</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 异常流程</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 客户端 A</span></span><br><span class="line">127.0.0.1:6379&gt; WATCH k1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; set k1 11</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; set k2 22</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 客户端 B</span></span><br><span class="line">127.0.0.1:6379&gt; set k1 BBB # 中途修改 k1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get k1</span><br><span class="line">&quot;abc&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 客户端 A</span></span><br><span class="line">127.0.0.1:6379&gt; EXEC</span><br><span class="line">(nil)  # 发现 k1 被修改返回 null</span><br></pre></td></tr></table></figure>
+
+<p>用redis事务解决</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        stringRedisTemplate.watch(REDIS_LOCK);</span><br><span class="line">        <span class="keyword">if</span> (stringRedisTemplate.opsForValue().get(REDIS_LOCK).equalsIgnoreCase(uniqValue)) &#123;</span><br><span class="line">            stringRedisTemplate.setEnableTransactionSupport(<span class="keyword">true</span>);</span><br><span class="line">            stringRedisTemplate.multi();</span><br><span class="line">            stringRedisTemplate.delete(REDIS_LOCK);</span><br><span class="line">            List&lt;Object&gt; list = stringRedisTemplate.exec();</span><br><span class="line">            <span class="keyword">if</span> (list == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stringRedisTemplate.unwatch();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>用 lua 脚本解决</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line">    Jedis jedis = RedisUtils.getJedis();</span><br><span class="line"></span><br><span class="line">    String script = <span class="string">&quot;if redis.call(&#x27;get&#x27;, KEYS[1]) == ARGV[1] &quot;</span> +</span><br><span class="line">        <span class="string">&quot;then &quot;</span> +</span><br><span class="line">        <span class="string">&quot;return redis.call(&#x27;del&#x27;, KEYS[1]) &quot;</span> +</span><br><span class="line">        <span class="string">&quot;else &quot;</span> +</span><br><span class="line">        <span class="string">&quot;return 0 &quot;</span> +</span><br><span class="line">        <span class="string">&quot;end&quot;</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Object o = jedis.eval(script, Collections.singletonList(REDIS_LOCK), Collections.singletonList(uniqValue));</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;1&quot;</span>.equals(o.toString())) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;------del redis lock ok&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;------del redis lock error&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != jedis) &#123;</span><br><span class="line">            jedis.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="如何保证执行时间小于过期时间——缓存时间续约"><a href="#如何保证执行时间小于过期时间——缓存时间续约" class="headerlink" title="如何保证执行时间小于过期时间——缓存时间续约"></a>如何保证执行时间小于过期时间——缓存时间续约</h6><h6 id="集群模式下-redis-和-zookeeper-的-CAP-对比"><a href="#集群模式下-redis-和-zookeeper-的-CAP-对比" class="headerlink" title="集群模式下 redis 和 zookeeper 的 CAP 对比"></a>集群模式下 redis 和 zookeeper 的 CAP 对比</h6><p>A C 不可兼得</p>
+<p>redis ：</p>
+<ul>
+<li>AP 高可用 分区容错</li>
+<li>异步复制可能造成锁丢失，如： 主节点没来得及把刚刚set进来的这条数据给从节点，就挂了</li>
+</ul>
+<p>zookeeper：</p>
+<ul>
+<li>CP 强一致 分区容错</li>
+</ul>
+</li>
+</ul>
+<h6 id="综上所述"><a href="#综上所述" class="headerlink" title="综上所述"></a>综上所述</h6><p>redis 集群下，要使用 RedLock（redis 分布式锁） 之 Redisson 落地实现</p>
+<h6 id="Redisson-版本"><a href="#Redisson-版本" class="headerlink" title="Redisson 版本"></a>Redisson 版本</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisConfig</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Redisson <span class="title">redisson</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Config config = <span class="keyword">new</span> Config();</span><br><span class="line">        config.useSingleServer()</span><br><span class="line">            .setAddress(<span class="string">&quot;redis://192.168.136.130:6379&quot;</span>)</span><br><span class="line">            .setDatabase(<span class="number">0</span>)</span><br><span class="line">            .setPassword(<span class="string">&quot;123456&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> (Redisson) Redisson.create(config);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GoodController</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Redisson redisson;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String REDIS_LOCK = <span class="string">&quot;MinusStockLock&quot;</span>; </span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/buy_goods&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">buy_goods</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        RLock redissonLock = redisson.getLock(REDIS_LOCK);</span><br><span class="line">        redissonLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 减库存</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">// 保证要释放的锁是当前线程持有的锁</span></span><br><span class="line">            <span class="keyword">if</span> (redissonLock.isLocked() &amp;&amp; redissonLock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                redissonLock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h6 id="reddisson-看门口机制"><a href="#reddisson-看门口机制" class="headerlink" title="reddisson 看门口机制"></a>reddisson 看门口机制</h6><h4 id="分布式锁总结"><a href="#分布式锁总结" class="headerlink" title="分布式锁总结"></a>分布式锁总结</h4><h2 id="缓存过期淘汰策略"><a href="#缓存过期淘汰策略" class="headerlink" title="缓存过期淘汰策略"></a>缓存过期淘汰策略</h2><ul>
+<li><p>查看Redis 最大内存  配置文件 redis.conf  64位默认最大内存，32位3G</p>
+</li>
+<li><p>生产设置   不超过四分之三</p>
+</li>
+<li><p>```nginx<br>maxmemory <bytes></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- redis 内存满了会怎样  **OOM**</span><br><span class="line"></span><br><span class="line">  &#96;&#96;&#96;shell</span><br><span class="line">  (error) OOM command not allowed when used memory &gt; &#39;maxmemory&#39;.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="LRU算法"><a href="#LRU算法" class="headerlink" title="LRU算法"></a>LRU算法</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/22/spring%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="prev" title="spring相关知识点">
+      <i class="fa fa-chevron-left"></i> spring相关知识点
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Redis 笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#redis-%E4%BC%A0%E7%BB%9F%E4%BA%94%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%BA%94%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">redis 传统五大数据结构及应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String%EF%BC%88%E5%AD%97%E7%AC%A6%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">String（字符）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash%EF%BC%88%E6%95%A3%E5%88%97%EF%BC%8Cmap%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">Hash（散列，map）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List%EF%BC%88%E5%88%97%E8%A1%A8%EF%BC%89"><span class="nav-number">1.1.3.</span> <span class="nav-text">List（列表）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-2"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">Set（集合）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-3"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SortedSet%EF%BC%88%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88%EF%BC%8C%E7%AE%80%E7%A7%B0-zSet%EF%BC%89"><span class="nav-number">1.1.5.</span> <span class="nav-text">SortedSet（有序集合，简称 zSet）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-4"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-4"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.6.</span> <span class="nav-text">其它类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">1.2.</span> <span class="nav-text">分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.0.1.1.</span> <span class="nav-text">业务代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E7%82%B9"><span class="nav-number">1.2.0.1.2.</span> <span class="nav-text">改进点</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#v1-0-%E6%B2%A1%E6%9C%89%E5%8A%A0%E9%94%81%EF%BC%8C%E5%B9%B6%E5%8F%91%E4%B8%8B%E6%95%B0%E5%AD%97%E4%B8%8D%E5%AF%B9%EF%BC%8C%E4%BC%9A%E5%87%BA%E7%8E%B0%E8%B6%85%E5%8D%96%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.2.0.1.2.1.</span> <span class="nav-text">v1.0 没有加锁，并发下数字不对，会出现超卖现象</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5-ngnix-%E4%BB%A3%E7%90%86"><span class="nav-number">1.2.0.1.2.2.</span> <span class="nav-text">加入 ngnix 代理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#v2-0-%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8B%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.0.1.2.3.</span> <span class="nav-text">v2.0 分布式下超卖问题</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#v3-0-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%95%E6%9C%BA%EF%BC%8C%E4%BB%A3%E7%A0%81%E6%B2%A1%E6%9C%89%E8%B5%B0%E5%88%B0-finally%EF%BC%8C%E6%B2%A1%E5%8A%9E%E6%B3%95%E4%BF%9D%E8%AF%81%E8%A7%A3%E9%94%81%EF%BC%8C%E9%9C%80%E8%A6%81%E5%8A%A0%E5%85%A5%E4%B8%80%E4%B8%AA%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E9%99%90%E5%AE%9A-key"><span class="nav-number">1.2.0.1.2.4.</span> <span class="nav-text">v3.0 服务器宕机，代码没有走到 finally，没办法保证解锁，需要加入一个过期时间限定 key</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#v4-0-%E5%8A%A0%E9%94%81%E4%B8%8E%E8%AE%BE%E7%BD%AE%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E4%B8%8D%E6%98%AF%E4%B8%80%E4%B8%AA%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.0.1.2.5.</span> <span class="nav-text">v4.0 加锁与设置过期时间不是一个原子操作</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#v5-0-%E5%BC%A0%E5%86%A0%E6%9D%8E%E6%88%B4%EF%BC%8C%E8%AF%AF%E5%88%A0%E4%BA%86%E5%88%AB%E4%BA%BA%E7%9A%84%E9%94%81-redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%9C%A8%E5%88%A0%E9%99%A4%E7%9A%84%E6%97%B6%E5%80%99%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.2.0.1.2.6.</span> <span class="nav-text">v5.0 张冠李戴，误删了别人的锁  (redis 分布式锁在删除的时候的注意事项)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#v6-0-%E5%88%A4%E6%96%AD%E5%92%8C%E5%88%A0%E9%99%A4%E4%B8%8D%E6%98%AF%E5%8E%9F%E5%AD%90%E6%80%A7%E7%9A%84"><span class="nav-number">1.2.0.1.2.7.</span> <span class="nav-text">v6.0 判断和删除不是原子性的</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4%E5%B0%8F%E4%BA%8E%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E2%80%94%E2%80%94%E7%BC%93%E5%AD%98%E6%97%B6%E9%97%B4%E7%BB%AD%E7%BA%A6"><span class="nav-number">1.2.0.1.2.8.</span> <span class="nav-text">如何保证执行时间小于过期时间——缓存时间续约</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F%E4%B8%8B-redis-%E5%92%8C-zookeeper-%E7%9A%84-CAP-%E5%AF%B9%E6%AF%94"><span class="nav-number">1.2.0.1.2.9.</span> <span class="nav-text">集群模式下 redis 和 zookeeper 的 CAP 对比</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BB%BC%E4%B8%8A%E6%89%80%E8%BF%B0"><span class="nav-number">1.2.0.1.2.10.</span> <span class="nav-text">综上所述</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Redisson-%E7%89%88%E6%9C%AC"><span class="nav-number">1.2.0.1.2.11.</span> <span class="nav-text">Redisson 版本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#reddisson-%E7%9C%8B%E9%97%A8%E5%8F%A3%E6%9C%BA%E5%88%B6"><span class="nav-number">1.2.0.1.2.12.</span> <span class="nav-text">reddisson 看门口机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">分布式锁总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5"><span class="nav-number">1.3.</span> <span class="nav-text">缓存过期淘汰策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LRU%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">LRU算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="acui"
+      src="/images/avtar.jpg">
+  <p class="site-author-name" itemprop="name">acui</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/acui96" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;acui96" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xinfeng.cui@foxmail.com" title="E-Mail → mailto:xinfeng.cui@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">acui</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
